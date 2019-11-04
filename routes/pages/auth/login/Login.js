@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import MyDrawer from './routes/Configuration'
-class App extends Component {
+
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,9 +10,11 @@ class App extends Component {
 
   render() {
     return (
-      <MyDrawer/>
+      <View>
+        <Text> Login </Text>
+      </View>
     );
   }
 }
 
-export default App;
+export default Login;
