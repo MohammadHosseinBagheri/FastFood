@@ -117,7 +117,6 @@ class Home extends Component {
         </View>
         <View style={{flex: 0.5}}>
           <Text>دسته بندی ها</Text>
-          </Image>
         </View>
         <MyModal ref={'myModal'} />
       </View>
