@@ -29,7 +29,7 @@ class Basicitem extends Component {
                       resizeMode={'stretch'}
                       source={require('../../../assets/img/food4.png')}
                     />
-                    <Text numberOfLines={3}>{item.description}</Text>
+                    <Text numberOfLines={2}>{item.description}</Text>
                   </View>
                 </Content>
               </CardItem>
@@ -40,21 +40,49 @@ class Basicitem extends Component {
     );
   }
 }
+class Places extends Component {
+  render() {
+    const {item} = this.props;
+    return (
+      <TouchableOpacity onPress={()=>{}} activeOpacity={0.8}>
+        <View
+          style={{margin: 5, justifyContent: 'center', alignItems: 'center'}}>
+          <Image
+            resizeMode={'stretch'}
+            style={{width: 100, height: 150}}
+            source={require('../../../assets/img/food1.png')}
+          />
+          <Text style={{fontFamily:'IRANSansMobile'}} >{item.name}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       restaurants: [],
+      places: [],
     };
   }
   componentDidMount() {
-    this.getDataFromApi();
+    this.getDataFromRestaurantApi();
+    this.getDataFromPlacesApi();
   }
   openMenu() {
     this.refs.myModal.modalOpen();
   }
-  async getDataFromApi() {
+  async getDataFromPlacesApi() {
+    const response = await fetch('http://10.0.2.2:3000/api/places');
+    const responseJsaon = await response.json();
+    console.log(responseJsaon);
+    await this.setState({
+      places: responseJsaon,
+    });
+  }
+  async getDataFromRestaurantApi() {
     const response = await fetch('http://10.0.2.2:3000/api/restaurants');
     const responseJsaon = await response.json();
     console.log(responseJsaon);
@@ -77,6 +105,15 @@ class Home extends Component {
           left={<Icon name={'mail'} style={{color: 'white'}} />}
         />
         <View style={{flex: 0.5}}>
+          <FlatList
+            horizontal={true}
+            data={this.state.places}
+            renderItem={({item, index}) => {
+              return <Places item={item} />;
+            }}
+          />
+        </View>
+        <View style={{flex: 0.6}}>
           <View
             style={{
               margin: 5,
@@ -85,9 +122,14 @@ class Home extends Component {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-              <Icon name={'arrow-dropleft'} style={{color:'green'}}/>
-              <Button transparent style={{marginLeft:2}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon name={'arrow-dropleft'} style={{color: 'green'}} />
+              <Button transparent style={{marginLeft: 2}}>
                 <Text
                   style={{
                     color: 'green',
