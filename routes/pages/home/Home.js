@@ -23,7 +23,7 @@ class Basicitem extends Component {
                 <Content>
                   <View
                     style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{textAlign: 'center'}}>{item.name}</Text>
+                    <Text style={{textAlign: 'center',fontFamily:'IRANSansMobile'}}>{item.name}</Text>
                     <Image
                       style={{width: 100, height: 100}}
                       resizeMode={'stretch'}
@@ -102,6 +102,7 @@ class Home extends Component {
               onPress={this.openMenu.bind(this)}
             />
           }
+          body={<Text style={{fontFamily:'IRANSansMobile_Bold',color:'white'}} >فست فود !</Text>}
           left={<Icon name={'mail'} style={{color: 'white'}} />}
         />
         <View style={{flex: 0.5}}>
