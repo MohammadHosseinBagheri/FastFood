@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, Text, StatusBar, Image, TouchableOpacity} from 'react-native';
-import items from './Items';
 import {FlatList} from 'react-native-gesture-handler';
 import MyHeader from '../../../components/Header/MyHeader';
 import {Icon, Card, CardItem, Content, Button, Left, Right} from 'native-base';
