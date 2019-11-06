@@ -22,7 +22,13 @@ class Basicitem extends Component {
                 <Content>
                   <View
                     style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{textAlign: 'center',fontFamily:'IRANSansMobile'}}>{item.name}</Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontFamily: 'IRANSansMobile',
+                      }}>
+                      {item.name}
+                    </Text>
                     <Image
                       style={{width: 100, height: 100}}
                       resizeMode={'stretch'}
@@ -43,7 +49,7 @@ class Places extends Component {
   render() {
     const {item} = this.props;
     return (
-      <TouchableOpacity onPress={()=>{}} activeOpacity={0.8}>
+      <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
         <View
           style={{margin: 5, justifyContent: 'center', alignItems: 'center'}}>
           <Image
@@ -51,27 +57,46 @@ class Places extends Component {
             style={{width: 100, height: 150}}
             source={require('../../../assets/img/food1.png')}
           />
-          <Text style={{fontFamily:'IRANSansMobile'}} >{item.name}</Text>
+          <Text style={{fontFamily: 'IRANSansMobile'}}>{item.name}</Text>
         </View>
       </TouchableOpacity>
     );
   }
 }
-
+class Categories extends Component {
+  render() {
+    const {item} = this.props;
+    return (
+      <View>
+        <Text>{item.name}</Text>
+        <Image resizeMode={'stretch'} style={{width:100,height:100}} source={require('../../../assets/img/food4.png')} />
+      </View>
+    );
+  }
+}
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       restaurants: [],
       places: [],
+      categories: [],
     };
   }
   componentDidMount() {
     this.getDataFromRestaurantApi();
     this.getDataFromPlacesApi();
+    this.getDataFromCategoriesApi();
   }
   openMenu() {
     this.refs.myModal.modalOpen();
+  }
+  async getDataFromCategoriesApi() {
+    const response = await fetch('http://10.0.2.2:3000/api/places');
+    const responseJsaon = await response.json();
+    await this.setState({
+      categories: responseJsaon,
+    });
   }
   async getDataFromPlacesApi() {
     const response = await fetch('http://10.0.2.2:3000/api/places');
@@ -101,7 +126,11 @@ class Home extends Component {
               onPress={this.openMenu.bind(this)}
             />
           }
-          body={<Text style={{fontFamily:'IRANSansMobile_Bold',color:'white'}} >فست فود !</Text>}
+          body={
+            <Text style={{fontFamily: 'IRANSansMobile_Bold', color: 'white'}}>
+              فست فود !
+            </Text>
+          }
           left={<Icon name={'mail'} style={{color: 'white'}} />}
         />
         <View style={{flex: 0.5}}>
@@ -159,6 +188,13 @@ class Home extends Component {
         </View>
         <View style={{flex: 0.5}}>
           <Text>دسته بندی ها</Text>
+          <FlatList
+          horizontal={true}
+            data={this.state.categories}
+            renderItem={({item, index}) => {
+              return <Categories item={item} />;
+            }}
+          />
         </View>
         <MyModal ref={'myModal'} />
       </View>
