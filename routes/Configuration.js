@@ -7,6 +7,7 @@ import Splash from './pages/splash/Splash';
 import Register from './pages/auth/register/Register';
 import Login from './pages/auth/login/Login';
 import Home from './pages/home/Home';
+import MyModal from '../components/Modal/MyModal';
 const Configuration = createStackNavigator(
   {
     SplashScreen: {

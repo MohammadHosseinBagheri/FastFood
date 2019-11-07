@@ -10,6 +10,10 @@ class MyModal extends Component {
   }
   modalOpen() {
     this.refs.myModal.open();
+    console.log(this.props)
+  }
+  componentDidMount(){
+    console.log(this.props)
   }
   render() {
     return (
@@ -63,6 +67,7 @@ class MyModal extends Component {
           </View>
           <View style={{flex: 0.6, backgroundColor: 'white'}}>
             <Item
+            onPress={()=>{this.props.navigation.navigate('LoginScreen')}}
               style={{
                 flexDirection: 'row-reverse',
                 borderBottomWidth: 0,
@@ -138,18 +143,7 @@ class MyModal extends Component {
                 معرفی به دوستان{' '}
               </Text>
             </Item>
-            <Item
-              style={{
-                flexDirection: 'row-reverse',
-                borderBottomWidth: 0,
-                marginTop: 20,
-              }}>
-              <Icon style={{color: '#E91E63'}} name={'person'} />
-              <Text
-                style={{marginRight: 10, fontFamily: 'IRANSansMobile_Light'}}>
-                ورود یا عضویت
-              </Text>
-            </Item>
+            
           </View>
         </View>
       </Modal>

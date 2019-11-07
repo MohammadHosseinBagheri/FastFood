@@ -10,7 +10,7 @@ class Splash extends Component {
     this.state = {};
   }
   online() {
-    this.props.navigation.replace('HomeScreen');
+    this.props.navigation.navigate('HomeScreen');
   }
   render() {
     return (

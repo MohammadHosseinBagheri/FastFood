@@ -207,7 +207,7 @@ class Home extends Component {
             }}
           />
         </View>
-        <MyModal ref={'myModal'} />
+        <MyModal ref={'myModal'} navigation={this.props.navigation} />
       </View>
     );
   }
