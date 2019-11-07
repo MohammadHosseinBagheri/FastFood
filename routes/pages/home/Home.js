@@ -57,7 +57,9 @@ class Places extends Component {
             style={{width: 100, height: 150}}
             source={require('../../../assets/img/food1.png')}
           />
-          <Text style={{fontFamily: 'IRANSansMobile'}}>{item.name}</Text>
+          <Text style={{fontFamily: 'IRANSansMobile', textAlign: 'center'}}>
+            {item.name}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -67,9 +69,13 @@ class Categories extends Component {
   render() {
     const {item} = this.props;
     return (
-      <View>
-        <Text>{item.name}</Text>
-        <Image resizeMode={'stretch'} style={{width:100,height:100}} source={require('../../../assets/img/food4.png')} />
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{fontFamily:'IRANSansMobile'}} >{item.name}</Text>
+        <Image
+          resizeMode={'stretch'}
+          style={{width: 100, height: 100}}
+          source={require('../../../assets/img/food3.jpg')}
+        />
       </View>
     );
   }
@@ -117,7 +123,7 @@ class Home extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#E0E0E0'}}>
+      <View style={{flex: 1, backgroundColor: '#EEEEEE'}}>
         <MyHeader
           right={
             <Icon
@@ -135,6 +141,7 @@ class Home extends Component {
         />
         <View style={{flex: 0.5}}>
           <FlatList
+            showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={this.state.places}
             renderItem={({item, index}) => {
@@ -178,6 +185,7 @@ class Home extends Component {
             </Text>
           </View>
           <FlatList
+            showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={this.state.restaurants}
             keyExtractor={index => index.toString()}
@@ -186,10 +194,13 @@ class Home extends Component {
             }}
           />
         </View>
-        <View style={{flex: 0.5}}>
-          <Text>دسته بندی ها</Text>
+        <View style={{flex: 0.5, marginTop: 10}}>
+          <Text style={{fontFamily: 'IRANSansMobile_Light', fontSize: 16}}>
+            دسته بندی ها
+          </Text>
           <FlatList
-          horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
             data={this.state.categories}
             renderItem={({item, index}) => {
               return <Categories item={item} />;

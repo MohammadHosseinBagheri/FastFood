@@ -15,14 +15,15 @@ class MyModal extends Component {
     return (
       <Modal
         style={{
-          width: '100%',
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          height: '90%',
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
         }}
         ref={'myModal'}
         position={'bottom'}
         backdrop={true}>
-        <View style={{flex: 1}}>
+        <View
+          style={{flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30}}>
           <View
             style={{
               flex: 0.2,
@@ -30,6 +31,8 @@ class MyModal extends Component {
               justifyContent: 'space-between',
               flexDirection: 'row',
               alignItems: 'center',
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
             }}>
             <View></View>
             <View>
