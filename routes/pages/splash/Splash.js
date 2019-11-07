@@ -38,7 +38,9 @@ class Splash extends Component {
               سفارش آنلاین
             </Text>
           </Button>
-          <Button transparent style={{width: 150, justifyContent: 'center',borderRadius:20}}>
+          <Button transparent style={{width: 150, justifyContent: 'center',borderRadius:20}} onPress={()=>{
+            this.props.navigation.navigate('LoginScreen')
+          }} >
             <Text style={{fontFamily: 'IRANSansMobile_Light',color:'black'}}>
               ورود / عضویت
             </Text>
