@@ -7,10 +7,10 @@ import MyModal from '../../../components/Modal/MyModal';
 
 class Basicitem extends Component {
   render() {
-    const {item} = this.props;
+    const {item,navigation} = this.props;
     return (
       <View style={{margin: 5}}>
-        <TouchableOpacity onPress={() => console.log('ok')} activeOpacity={0.9}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('RestaurantsScreen',{item:item})} activeOpacity={0.9}>
           <View>
             <Card
               style={{
@@ -47,9 +47,9 @@ class Basicitem extends Component {
 }
 class Places extends Component {
   render() {
-    const {item} = this.props;
+    const {item,navigation} = this.props;
     return (
-      <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
+      <TouchableOpacity onPress={() => {console.log(this.props)}} activeOpacity={0.8}>
         <View
           style={{margin: 5, justifyContent: 'center', alignItems: 'center'}}>
           <Image
@@ -93,12 +93,13 @@ class Home extends Component {
     this.getDataFromRestaurantApi();
     this.getDataFromPlacesApi();
     this.getDataFromCategoriesApi();
+    console.log(this.props.navigation)
   }
   openMenu() {
     this.refs.myModal.modalOpen();
   }
   async getDataFromCategoriesApi() {
-    const response = await fetch('http://10.0.2.2:3000/api/places');
+    const response = await fetch('http://10.0.2.2:3000/api/categories');
     const responseJsaon = await response.json();
     await this.setState({
       categories: responseJsaon,
@@ -144,8 +145,9 @@ class Home extends Component {
             showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={this.state.places}
+            keyExtractor={index=>(index.toString())}
             renderItem={({item, index}) => {
-              return <Places item={item} />;
+              return <Places navigation={this.props.navigation} item={item} />;
             }}
           />
         </View>
@@ -190,7 +192,7 @@ class Home extends Component {
             data={this.state.restaurants}
             keyExtractor={index => index.toString()}
             renderItem={({item}) => {
-              return <Basicitem item={item} />;
+              return <Basicitem navigation={this.props.navigation} item={item} />;
             }}
           />
         </View>

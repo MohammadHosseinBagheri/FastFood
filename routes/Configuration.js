@@ -8,6 +8,7 @@ import Register from './pages/auth/register/Register';
 import Login from './pages/auth/login/Login';
 import Home from './pages/home/Home';
 import MyModal from '../components/Modal/MyModal';
+import Restaurants from './pages/restaurants/Restaurants';
 const Configuration = createStackNavigator(
   {
     SplashScreen: {
@@ -22,6 +23,9 @@ const Configuration = createStackNavigator(
     HomeScreen: {
       screen: Home,
     },
+    RestaurantsScreen:{
+      screen:Restaurants
+    }
   },
   {
     headerMode: 'none',
@@ -30,4 +34,4 @@ const Configuration = createStackNavigator(
 const MyDrawer = createDrawerNavigator({
   MainDrawer: Configuration,
 });
-export default createAppContainer(MyDrawer);
+export default createAppContainer(Configuration);
