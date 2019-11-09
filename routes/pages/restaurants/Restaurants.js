@@ -1,12 +1,73 @@
 import React, {Component} from 'react';
-import {View, Text, view, ImageBackground} from 'react-native';
-import {Icon} from 'native-base';
+import {View, Text, view, ImageBackground, FlatList, Image} from 'react-native';
+import {Icon, Button} from 'native-base';
 import StarRating from 'react-native-star-rating';
+class Menus extends Component {
+  render() {
+    const {item} = this.props;
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#ECEFF1',
+        }}>
+        <Button
+          style={{
+            margin: 10,
+            width: 30,
+            height: 30,
+            justifyContent: 'center',
+            backgroundColor: '#FF7043',
+          }}>
+          <Text
+            style={{
+              fontFamily: 'IRANSansMobile_Bold',
+              fontSize: 12,
+              color: 'white',
+            }}>
+            خرید
+          </Text>
+        </Button>
+        <View style={{flex: 1, flexDirection: 'column', marginLeft: 20}}>
+          <Text style={{fontFamily: 'IRANSansMobile_Bold', fontSize: 16}}>
+            {item.name}
+          </Text>
+          <Text style={{fontFamily: 'IRANSansMobile'}}>
+            قیمت {item.price} تومان
+          </Text>
+          <Text style={{fontFamily:'IRANSansMobile_Medium'}} >{item.about}</Text>
+          <View style={{width:150,flexDirection:'row',justifyContent:'center',alignItems:'center'}} >
+            <StarRating
+              fullStarColor={'gray'}
+              starSize={15}
+              disabled={false}
+              maxStars={5}
+              rating={3}
+            />
+            <Text style={{backgroundColor:'#AFB42B',marginLeft:10,width:20,borderRadius:4,textAlign:'center'}}>
+              3
+            </Text>
+          </View>
+        </View>
+
+        <Image
+          style={{width: 100, height: 100}}
+          resizeMode={'stretch'}
+          source={require('../../../assets/img/food4.png')}
+        />
+      </View>
+    );
+  }
+}
 class Restaurants extends Component {
   constructor(props) {
     super(props);
     this.state = {
       starCount: 3.5,
+      menus: [],
     };
   }
   onStarRatingPress(rating) {
@@ -16,6 +77,26 @@ class Restaurants extends Component {
   }
   componentDidMount() {
     console.log(this.props);
+    this.fetchDataFromMenu();
+  }
+  colorRank() {
+    if (this.state.starCount <= 2) {
+      return '#d50000';
+    }
+    if (this.state.starCount > 2 && this.state.starCount <= 4) {
+      return '#AFB42B';
+    }
+    if (this.state.starCount >= 4) {
+      return '#4CAF50';
+    }
+  }
+  async fetchDataFromMenu() {
+    const response = await fetch('http://10.0.2.2:3000/api/menu');
+    const responseJson = await response.json();
+    await this.setState({
+      menus: responseJson,
+    });
+    await console.log(this.state.menus);
   }
   render() {
     return (
@@ -31,18 +112,31 @@ class Restaurants extends Component {
                 marginRight: '18%',
                 marginTop: '20%',
               }}>
-              <View style={{flexDirection:'row-reverse',justifyContent:'space-around'}}>
-              <Text
+              <View
                 style={{
-                  color: 'white',
-                  fontFamily: 'IRANSansMobile_Bold',
-                  fontSize: 20,
+                  flexDirection: 'row-reverse',
+                  justifyContent: 'space-around',
                 }}>
-                {this.props.navigation.state.params.item.name}
-              </Text>
-              <Text style={{color:'red',backgroundColor:'white',borderRadius:10,width:20,height:20,textAlign:'center',fontSize:16}}  >
-              i
-              </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontFamily: 'IRANSansMobile_Bold',
+                    fontSize: 20,
+                  }}>
+                  {this.props.navigation.state.params.item.name}
+                </Text>
+                <Text
+                  style={{
+                    color: 'red',
+                    backgroundColor: 'white',
+                    borderRadius: 10,
+                    width: 20,
+                    height: 20,
+                    textAlign: 'center',
+                    fontSize: 16,
+                  }}>
+                  i
+                </Text>
               </View>
               <View
                 style={{
@@ -61,21 +155,41 @@ class Restaurants extends Component {
                   هزینه پیک
                 </Text>
               </View>
-              <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row-reverse'}}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row-reverse',
+                }}>
                 <StarRating
-                fullStarColor={'white'}
+                  fullStarColor={'white'}
                   starSize={15}
                   disabled={false}
                   maxStars={5}
                   rating={this.state.starCount}
                   selectedStar={rating => this.onStarRatingPress(rating)}
                 />
-              <Text style={{backgroundColor:'#AFB42B',marginRight:10,width:25,textAlign:'center',borderRadius:5}} >
+                <Text
+                  style={{
+                    backgroundColor: this.colorRank(),
+                    marginRight: 10,
+                    width: 25,
+                    textAlign: 'center',
+                    borderRadius: 5,
+                  }}>
                   {this.state.starCount}
-              </Text>
+                </Text>
               </View>
             </View>
           </ImageBackground>
+        </View>
+        <View style={{flex: 0.7}}>
+          <FlatList
+            data={this.state.menus}
+            renderItem={({item}) => {
+              return <Menus item={item} />;
+            }}
+          />
         </View>
       </View>
     );
