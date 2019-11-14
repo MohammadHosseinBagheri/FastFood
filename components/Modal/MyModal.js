@@ -110,7 +110,7 @@ class MyModal extends Component {
                 flexDirection: 'row-reverse',
                 borderBottomWidth: 0,
                 marginTop: 20,
-              }}>
+              }} onPress={()=>{this.props.navigation.navigate('RestaurantsRegisterScreen')}} >
               <Icon style={{color: '#E91E63'}} name={'pizza'} />
               <Text
                 style={{marginRight: 10, fontFamily: 'IRANSansMobile_Light'}}>

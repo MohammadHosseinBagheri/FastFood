@@ -9,6 +9,7 @@ import Login from './pages/auth/login/Login';
 import Home from './pages/home/Home';
 import MyModal from '../components/Modal/MyModal';
 import Restaurants from './pages/restaurants/Restaurants';
+import RestaurantsRegister from './pages/restaurants/RestaurantsRegister';
 const Configuration = createStackNavigator(
   {
     SplashScreen: {
@@ -25,6 +26,9 @@ const Configuration = createStackNavigator(
     },
     RestaurantsScreen:{
       screen:Restaurants
+    },
+    RestaurantsRegisterScreen:{
+      screen:RestaurantsRegister
     }
   },
   {
