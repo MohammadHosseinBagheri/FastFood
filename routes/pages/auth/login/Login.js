@@ -3,6 +3,7 @@ import {View, Text} from 'react-native';
 import MyHeader from '../../../../components/Header/MyHeader';
 import {Item, Input, Icon, Button} from 'native-base';
 import LoginModal from '../../../../components/Modal/LoginModal';
+import Register from '../register/Register';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -18,9 +19,12 @@ class Login extends Component {
   openModal() {
     this.refs.login.open();
   }
+  openRegisterModal() {
+    this.refs.registerModal.open();
+  }
   async fetch() {
     console.log(this.state.phone);
-    const response = await fetch('http://10.0.2.2:3000/api/login/users', {
+    const response = await fetch('http://10.0.2.2:3000/users/login', {
       method: 'Post',
       headers: {
         'Content-Type': 'application/json',
@@ -68,11 +72,7 @@ class Login extends Component {
             />
           </Item>
           <View style={{justifyContent: 'center'}}>
-            <Button
-              transparent
-              onPress={() => {
-                this.props.navigation.navigate('RegisterScreen');
-              }}>
+            <Button transparent onPress={this.openRegisterModal.bind(this)}>
               <Text style={{color: 'red', fontFamily: 'IRANSansMobile_Bold'}}>
                 ثبت نام نکرده ام
               </Text>
@@ -93,6 +93,7 @@ class Login extends Component {
           </Button>
         </View>
         <LoginModal ref={'login'} navigation={this.props.navigation} />
+        <Register ref={'registerModal'} />
       </View>
     );
   }
