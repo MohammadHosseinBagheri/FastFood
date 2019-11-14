@@ -52,8 +52,45 @@ class RestaurantsRegister extends Component {
   }
   onChangeManagePhone(text) {
     this.setState({
-      managePhone:text
+      managePhone: text,
     });
+  }
+  async fetchDataToRegisterRestaurant() {
+    const response = await fetch('http://10.0.2.2:3000/restaurants/register', {
+      method: 'Post',
+      headers: {
+        'Content-Type': 'Application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.restaurantName,
+        city: this.state.cistyName,
+        address: this.state.address,
+        phone: this.state.restaurantPhone,
+        manageName: this.state.manageName,
+        managePhone: this.state.managePhone,
+      }),
+    });
+    const responseJson = await response.json();
+    await console.log(responseJson);
+  }
+  onRegisterClick() {
+      //console.log(this.state)
+    if (
+      this.state.address == '' ||
+      this.state.cistyName == '' ||
+      this.state.manageName == '' ||
+      this.state.managePhone == '' ||
+      this.state.restaurantName == '' ||
+      this.state.restaurantPhone == ''
+    ) {
+      this.setState({
+        error: true,
+      });
+      return;
+    } else {
+        console.log('ok')
+      this.fetchDataToRegisterRestaurant();
+    }
   }
   render() {
     return (
@@ -103,6 +140,7 @@ class RestaurantsRegister extends Component {
                     fontFamily: 'IRANSansMobile_Medium',
                     fontSize: 13,
                   }}
+                  onChangeText={this.onChangeRestaurantName.bind(this)}
                   placeholder={'نام رستوران'}
                 />
                 <Icon name={'restaurant'} />
@@ -117,6 +155,7 @@ class RestaurantsRegister extends Component {
                     fontSize: 13,
                   }}
                   placeholder={'نام شهر'}
+                  onChangeText={this.onChangeCityName.bind(this)}
                 />
                 <Icon name={'pin'} />
               </Item>
@@ -130,6 +169,7 @@ class RestaurantsRegister extends Component {
                     fontSize: 13,
                   }}
                   placeholder={'آدرس '}
+                  onChangeText={this.onChangeAddress.bind(this)}
                 />
                 <Icon name={'pin'} />
               </Item>
@@ -143,6 +183,7 @@ class RestaurantsRegister extends Component {
                     fontSize: 13,
                   }}
                   placeholder={'تلفن رستوران '}
+                  onChangeText={this.onChangeRestaurantPhone.bind(this)}
                 />
                 <Icon name={'call'} />
               </Item>
@@ -156,6 +197,7 @@ class RestaurantsRegister extends Component {
                     fontSize: 13,
                   }}
                   placeholder={'نام و نام خانوادگی مدیر رستوران'}
+                  onChangeText={this.onChangeMaanageName.bind(this)}
                 />
                 <Icon name={'person'} />
               </Item>
@@ -169,6 +211,7 @@ class RestaurantsRegister extends Component {
                     fontSize: 13,
                   }}
                   placeholder={'شماره موبایل مدیر رستوران '}
+                  onChangeText={this.onChangeManagePhone.bind(this)}
                 />
                 <Icon name={'calculator'} />
               </Item>
@@ -188,7 +231,8 @@ class RestaurantsRegister extends Component {
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
               justifyContent: 'center',
-            }}>
+            }}
+            onPress={this.onRegisterClick.bind(this)}>
             <Text
               style={{
                 color: 'white',
