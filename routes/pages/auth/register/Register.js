@@ -66,6 +66,7 @@ class Register extends Component {
         objectId:responsejson.user._id
       });
       console.log(this.state)
+      this.refs.registerModal.close()
       return
     }
     if(this.state.status==500||this.state.status==202){
