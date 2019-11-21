@@ -2,6 +2,7 @@ import {
   createStackNavigator,
   createAppContainer,
   createDrawerNavigator,
+  createBottomTabNavigator,
 } from 'react-navigation';
 import Splash from './pages/splash/Splash';
 import Register from './pages/auth/register/Register';
@@ -10,6 +11,19 @@ import Home from './pages/home/Home';
 import MyModal from '../components/Modal/MyModal';
 import Restaurants from './pages/restaurants/Restaurants';
 import RestaurantsRegister from './pages/restaurants/RestaurantsRegister';
+import RestaurantManagement from './pages/restaurants/RestaurantManagement';
+import Menu from '../routes/pages/restaurants/Tabs/Menu';
+import Information from '../routes/pages/restaurants/Tabs/Information';
+import Menus from './pages/restaurants/Menus';
+// const RestaurantsTabs=createBottomTabNavigator({
+
+//   MenuScreen:{
+//     screen:Menu,
+//   },
+//   InformationScreen:{
+//     screen:Information
+//   }
+// })
 const Configuration = createStackNavigator(
   {
     SplashScreen: {
@@ -24,12 +38,18 @@ const Configuration = createStackNavigator(
     HomeScreen: {
       screen: Home,
     },
-    RestaurantsScreen:{
-      screen:Restaurants
+    RestaurantsScreen: {
+      screen: Restaurants,
     },
-    RestaurantsRegisterScreen:{
-      screen:RestaurantsRegister
-    }
+    RestaurantsRegisterScreen: {
+      screen: RestaurantsRegister,
+    },
+    RestaurantsManagementScreen: {
+      screen: RestaurantManagement,
+    },
+    MenusRestaurantScreen: {
+      screen: Menus,
+    },
   },
   {
     headerMode: 'none',

@@ -38,8 +38,16 @@ class Menus extends Component {
           <Text style={{fontFamily: 'IRANSansMobile'}}>
             قیمت {item.price} تومان
           </Text>
-          <Text style={{fontFamily:'IRANSansMobile_Medium'}} >{item.about}</Text>
-          <View style={{width:150,flexDirection:'row',justifyContent:'center',alignItems:'center'}} >
+          <Text style={{fontFamily: 'IRANSansMobile_Medium'}}>
+            {item.about}
+          </Text>
+          <View
+            style={{
+              width: 150,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <StarRating
               fullStarColor={'gray'}
               starSize={15}
@@ -47,7 +55,14 @@ class Menus extends Component {
               maxStars={5}
               rating={3}
             />
-            <Text style={{backgroundColor:'#AFB42B',marginLeft:10,width:20,borderRadius:4,textAlign:'center'}}>
+            <Text
+              style={{
+                backgroundColor: '#AFB42B',
+                marginLeft: 10,
+                width: 20,
+                borderRadius: 4,
+                textAlign: 'center',
+              }}>
               3
             </Text>
           </View>
@@ -68,6 +83,8 @@ class Restaurants extends Component {
     this.state = {
       starCount: 3.5,
       menus: [],
+      data: '',
+      foods: [],
     };
   }
   onStarRatingPress(rating) {
@@ -75,9 +92,14 @@ class Restaurants extends Component {
       starCount: rating,
     });
   }
-  componentDidMount() {
-    console.log(this.props);
-    this.fetchDataFromMenu();
+  async componentDidMount() {
+    //console.log(this.props);
+    const data = await this.props.navigation.state.params.item;
+    await this.setState({
+      data: data,
+    });
+    await console.log(this.state.data);
+    await this.fetchDataFromMenu();
   }
   colorRank() {
     if (this.state.starCount <= 2) {
@@ -91,12 +113,20 @@ class Restaurants extends Component {
     }
   }
   async fetchDataFromMenu() {
-    const response = await fetch('http://10.0.2.2:3000/api/menu');
-    const responseJson = await response.json();
-    await this.setState({
-      menus: responseJson,
+    const response = await fetch('http://10.0.2.2:3000/restaurants/menus', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'Post',
+      body: JSON.stringify({data:this.state.data})
     });
-    await console.log(this.state.menus);
+    const responseJson = await response.json();
+    console.log(responseJson);
+    const food = await responseJson.data;
+    await this.setState({
+      foods: food,
+    });
+    //await console.log(this.state.foods);
   }
   render() {
     return (
@@ -185,7 +215,7 @@ class Restaurants extends Component {
         </View>
         <View style={{flex: 0.7}}>
           <FlatList
-            data={this.state.menus}
+            data={this.state.foods}
             renderItem={({item}) => {
               return <Menus item={item} />;
             }}

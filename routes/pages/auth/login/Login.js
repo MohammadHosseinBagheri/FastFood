@@ -22,7 +22,7 @@ class Login extends Component {
   openRegisterModal() {
     this.refs.registerModal.open();
   }
-  async fetch() {
+  async fetchUser() {
     console.log(this.state.phone);
     const response = await fetch('http://10.0.2.2:3000/users/login', {
       method: 'Post',
@@ -42,6 +42,39 @@ class Login extends Component {
       return;
     } else {
       console.log('ok');
+    }
+  }
+  async fetchResManager() {
+    const response = await fetch('http://10.0.2.2:3000/restaurants/login', {
+      method: 'Post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: this.state.phone,
+      }),
+    });
+    const responseJson = await response.json();
+    await console.log(responseJson);
+    const status = await responseJson.status;
+    //console.log(status);
+    if (status == 200) {
+      this.props.navigation.replace(
+        'RestaurantsManagementScreen',
+        (data = {
+          data: responseJson,
+        }),
+      );
+      return
+    }
+  }
+  login() {
+    if (this.state.phone.slice(0, 3) == 'res') {
+      this.fetchResManager();
+      console.log('ok')
+      return;
+    } else {
+      this.fetchUser();
     }
   }
   render() {
@@ -65,7 +98,6 @@ class Login extends Component {
           <Item>
             <Icon name={'call'} />
             <Input
-              keyboardType={'number-pad'}
               style={{fontFamily: 'IRANSansMobile'}}
               placeholder={'شماره موبایل'}
               onChangeText={this.changePhone.bind(this)}
@@ -86,7 +118,8 @@ class Login extends Component {
               alignItems: 'center',
               backgroundColor: '#E91E63',
             }}
-            onPress={this.fetch.bind(this)}>
+            //onPress={this.fetchUser.bind(this)}
+            onPress={this.login.bind(this)}>
             <Text style={{fontFamily: 'IRANSansMobile', color: 'white'}}>
               تایید شماره موبایل
             </Text>

@@ -4,57 +4,111 @@ import {FlatList} from 'react-native-gesture-handler';
 import MyHeader from '../../../components/Header/MyHeader';
 import {Icon, Card, CardItem, Content, Button, Left, Right} from 'native-base';
 import MyModal from '../../../components/Modal/MyModal';
+import StarRating from 'react-native-star-rating';
 
 class Basicitem extends Component {
   render() {
-    const {item,navigation} = this.props;
+    const {item, navigation} = this.props;
     return (
       <View style={{margin: 5}}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('RestaurantsScreen',{item:item})} activeOpacity={0.9}>
-          <View>
-            <Card
-              style={{
-                width: 200,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <CardItem style={{elevation: 10}}>
-                <Content>
+        <View style={{borderRadius: 10}}>
+          <Card
+            style={{
+              width: 200,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 20,
+            }}>
+            <CardItem style={{elevation: 10, borderRadius: 20}}>
+              <Content>
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Image
+                    style={{width: 100, height: 100}}
+                    resizeMode={'stretch'}
+                    source={require('../../../assets/img/food4.png')}
+                  />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Bold',
+                    }}>
+                    {item.name}
+                  </Text>
                   <View
-                    style={{justifyContent: 'center', alignItems: 'center'}}>
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
                     <Text
                       style={{
+                        marginRight: 5,
+                        backgroundColor: 'green',
+                        width: 20,
+                        height: 20,
                         textAlign: 'center',
-                        fontFamily: 'IRANSansMobile',
-                      }}>
-                      {item.name}
-                    </Text>
-                    <Image
-                      style={{width: 100, height: 100}}
-                      resizeMode={'stretch'}
-                      source={require('../../../assets/img/food4.png')}
+                        borderRadius: 5,
+                      }}></Text>
+                    <StarRating
+                      fullStarColor={'gray'}
+                      starSize={15}
+                      rating={3.5}
+                      disabled={true}
                     />
-                    <Text numberOfLines={2}>{item.description}</Text>
                   </View>
-                </Content>
-              </CardItem>
-            </Card>
-          </View>
-        </TouchableOpacity>
+                  <CardItem>
+                    <View>
+                      <Text style={{fontFamily: 'IRANSansMobile_Light'}}>
+                        {item.city}
+                      </Text>
+                      <Text style={{fontFamily: 'IRANSansMobile'}}>
+                        {item.address}
+                      </Text>
+                    </View>
+                  </CardItem>
+                  <Button
+                    style={{
+                      padding: 10,
+                      borderColor: '#E91E63',
+                      borderWidth: 3,
+                    }}
+                    bordered
+                    onPress={() =>
+                      this.props.navigation.navigate('RestaurantsScreen', {
+                        item: item,
+                      })
+                    }>
+                    <Text
+                      style={{
+                        fontFamily: 'IRANSansMobile_Bold',
+                        color: '#E91E63',
+                      }}>
+                      نمایش منو
+                    </Text>
+                  </Button>
+                </View>
+              </Content>
+            </CardItem>
+          </Card>
+        </View>
       </View>
     );
   }
 }
 class Places extends Component {
   render() {
-    const {item,navigation} = this.props;
+    const {item, navigation} = this.props;
     return (
-      <TouchableOpacity onPress={() => {console.log(this.props)}} activeOpacity={0.8}>
+      <TouchableOpacity
+        onPress={() => {
+          //console.log(this.props);
+        }}
+        activeOpacity={0.8}>
         <View
           style={{margin: 5, justifyContent: 'center', alignItems: 'center'}}>
           <Image
             resizeMode={'stretch'}
-            style={{width: 100, height: 150}}
+            style={{width: 100, height: 100}}
             source={require('../../../assets/img/food1.png')}
           />
           <Text style={{fontFamily: 'IRANSansMobile', textAlign: 'center'}}>
@@ -70,7 +124,7 @@ class Categories extends Component {
     const {item} = this.props;
     return (
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontFamily:'IRANSansMobile'}} >{item.name}</Text>
+        <Text style={{fontFamily: 'IRANSansMobile'}}>{item.name}</Text>
         <Image
           resizeMode={'stretch'}
           style={{width: 100, height: 100}}
@@ -89,11 +143,11 @@ class Home extends Component {
       categories: [],
     };
   }
-  componentDidMount() {
-    this.getDataFromRestaurantApi();
-    this.getDataFromPlacesApi();
-    this.getDataFromCategoriesApi();
-    console.log(this.props.navigation)
+  async componentDidMount() {
+    await this.getDataFromRestaurantApi();
+    await this.getDataFromPlacesApi();
+    await this.getDataFromCategoriesApi();
+    //console.log(this.props.navigation);
   }
   openMenu() {
     this.refs.myModal.modalOpen();
@@ -108,7 +162,7 @@ class Home extends Component {
   async getDataFromPlacesApi() {
     const response = await fetch('http://10.0.2.2:3000/api/places');
     const responseJsaon = await response.json();
-    console.log(responseJsaon);
+    //console.log(responseJsaon);
     await this.setState({
       places: responseJsaon,
     });
@@ -120,7 +174,7 @@ class Home extends Component {
     await this.setState({
       restaurants: responseJsaon,
     });
-    console.log(this.state.restaurants);
+    //console.log(this.state.restaurants);
   }
   render() {
     return (
@@ -140,18 +194,18 @@ class Home extends Component {
           }
           left={<Icon name={'mail'} style={{color: 'white'}} />}
         />
-        <View style={{flex: 0.5}}>
+        <View style={{flex: 0.4}}>
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={this.state.places}
-            keyExtractor={index=>(index.toString())}
+            keyExtractor={index => index.toString()}
             renderItem={({item, index}) => {
               return <Places navigation={this.props.navigation} item={item} />;
             }}
           />
         </View>
-        <View style={{flex: 0.6}}>
+        <View style={{flex: 0.8}}>
           <View
             style={{
               margin: 5,
@@ -187,16 +241,19 @@ class Home extends Component {
             </Text>
           </View>
           <FlatList
+            extraData={this.state.restaurants}
             showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={this.state.restaurants}
             keyExtractor={index => index.toString()}
             renderItem={({item}) => {
-              return <Basicitem navigation={this.props.navigation} item={item} />;
+              return (
+                <Basicitem navigation={this.props.navigation} item={item} />
+              );
             }}
           />
         </View>
-        <View style={{flex: 0.5, marginTop: 10}}>
+        <View style={{flex: 0.4, marginTop: 10}}>
           <Text style={{fontFamily: 'IRANSansMobile_Light', fontSize: 16}}>
             دسته بندی ها
           </Text>

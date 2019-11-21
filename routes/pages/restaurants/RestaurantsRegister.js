@@ -143,7 +143,7 @@ class RestaurantsRegister extends Component {
                   onChangeText={this.onChangeRestaurantName.bind(this)}
                   placeholder={'نام رستوران'}
                 />
-                <Icon name={'restaurant'} />
+                <Icon name={'restaurant'} style={{color:'#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -157,7 +157,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'نام شهر'}
                   onChangeText={this.onChangeCityName.bind(this)}
                 />
-                <Icon name={'pin'} />
+                <Icon name={'pin'} style={{color:'#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -171,7 +171,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'آدرس '}
                   onChangeText={this.onChangeAddress.bind(this)}
                 />
-                <Icon name={'pin'} />
+                <Icon name={'pin'} style={{color:'#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -185,7 +185,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'تلفن رستوران '}
                   onChangeText={this.onChangeRestaurantPhone.bind(this)}
                 />
-                <Icon name={'call'} />
+                <Icon name={'call'} style={{color:'#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -199,7 +199,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'نام و نام خانوادگی مدیر رستوران'}
                   onChangeText={this.onChangeMaanageName.bind(this)}
                 />
-                <Icon name={'person'} />
+                <Icon name={'person'} style={{color:'#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem style={{borderRadius: 20, borderBottomColor: 'white'}}>
@@ -213,7 +213,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'شماره موبایل مدیر رستوران '}
                   onChangeText={this.onChangeManagePhone.bind(this)}
                 />
-                <Icon name={'calculator'} />
+                <Icon name={'calculator'} style={{color:'#E91E63'}} />
               </Item>
             </CardItem>
           </Card>

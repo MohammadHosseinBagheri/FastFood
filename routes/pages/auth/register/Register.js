@@ -103,7 +103,7 @@ class Register extends Component {
         ref={'registerModal'}
         position={'center'}
         backdrop={true}
-        style={{width: '80%', height: '70%', borderRadius: 30}}>
+        style={{width: '80%', height: '60%', borderRadius: 30}}>
         <View
           style={{
             flex: 1,
@@ -118,7 +118,7 @@ class Register extends Component {
                 style={{fontFamily: 'IRANSansMobile_Light'}}
                 onChangeText={this.onChangeName.bind(this)}
               />
-              <Icon name={'person'} />
+              <Icon name={'person'} style={{color:'#E91E63'}} />
             </Item>
           </View>
           <View>
@@ -128,7 +128,7 @@ class Register extends Component {
                 style={{fontFamily: 'IRANSansMobile_Light'}}
                 onChangeText={this.onChangeLastName.bind(this)}
               />
-              <Icon name={'person'} />
+              <Icon name={'person'} style={{color:'#E91E63'}} />
             </Item>
           </View>
           <View>
@@ -139,7 +139,7 @@ class Register extends Component {
                 style={{fontFamily: 'IRANSansMobile_Light'}}
                 onChangeText={this.onChangePhone.bind(this)}
               />
-              <Icon name={'person'} />
+              <Icon name={'call'} style={{color:'#E91E63'}} />
             </Item>
           </View>
           <View>
@@ -150,7 +150,7 @@ class Register extends Component {
                 style={{fontFamily: 'IRANSansMobile_Light', textAlign: 'right'}}
                 onChangeText={this.onChangePassword.bind(this)}
               />
-              <Icon name={'person'} />
+              <Icon name={'lock'} style={{color:'#E91E63'}} />
             </Item>
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
