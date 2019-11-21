@@ -15,6 +15,7 @@ import RestaurantManagement from './pages/restaurants/RestaurantManagement';
 import Menu from '../routes/pages/restaurants/Tabs/Menu';
 import Information from '../routes/pages/restaurants/Tabs/Information';
 import Menus from './pages/restaurants/Menus';
+import EditRestaurantsInformation from './pages/restaurants/EditRestaurantsInformation';
 // const RestaurantsTabs=createBottomTabNavigator({
 
 //   MenuScreen:{
@@ -49,6 +50,9 @@ const Configuration = createStackNavigator(
     },
     MenusRestaurantScreen: {
       screen: Menus,
+    },
+    RestaurantEditInformationScreen: {
+      screen: EditRestaurantsInformation,
     },
   },
   {
