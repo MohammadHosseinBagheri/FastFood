@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text,Image} from 'react-native';
 import MyHeader from '../../../../components/Header/MyHeader';
 import {Item, Input, Icon, Button} from 'native-base';
 import LoginModal from '../../../../components/Modal/LoginModal';
@@ -65,13 +65,13 @@ class Login extends Component {
           data: responseJson,
         }),
       );
-      return
+      return;
     }
   }
   login() {
     if (this.state.phone.slice(0, 3) == 'res') {
       this.fetchResManager();
-      console.log('ok')
+      console.log('ok');
       return;
     } else {
       this.fetchUser();
@@ -90,12 +90,18 @@ class Login extends Component {
               }}
             />
           }
+          body={
+            <Text style={{fontFamily: 'IRANSansMobile_Bold', fontSize: 18,color:'white'}}>
+              صفحه ورود
+            </Text>
+          }
         />
-        <View style={{flex: 1, alignItems: 'center', marginTop: 20}}>
+        <View style={{flex: 1, alignItems: 'center', margin: 20}}>
+          <Image resizeMode={'stretch'} source={require('../../../../assets/img/user.png')} style={{width:100,height:100,marginTop:-40,marginBottom:20}} />
           <Text style={{fontFamily: 'IRANSansMobile_Light', fontSize: 18}}>
             شماره موبایل خود را وارد کنید
           </Text>
-          <Item>
+          <Item style={{margin:20}}>
             <Icon name={'call'} />
             <Input
               style={{fontFamily: 'IRANSansMobile'}}
