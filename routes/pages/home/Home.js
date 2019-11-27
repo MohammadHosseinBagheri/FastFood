@@ -1,10 +1,18 @@
 import React, {Component} from 'react';
-import {View, Text, StatusBar, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import MyHeader from '../../../components/Header/MyHeader';
 import {Icon, Card, CardItem, Content, Button, Left, Right} from 'native-base';
 import MyModal from '../../../components/Modal/MyModal';
 import StarRating from 'react-native-star-rating';
+import CatItem from '../categories/categories';
 
 class Basicitem extends Component {
   render() {
@@ -19,7 +27,7 @@ class Basicitem extends Component {
               alignItems: 'center',
               borderRadius: 20,
             }}>
-            <CardItem style={{elevation: 10, borderRadius: 20}}>
+            <CardItem style={{elevation: 10, borderRadius: 20, height: '100%'}}>
               <Content>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Image
@@ -120,17 +128,47 @@ class Places extends Component {
   }
 }
 class Categories extends Component {
+  constructor(props) {
+    super(props);
+  }
+  async clickItem(item) {
+    console.log(item);
+    const response = await fetch(
+      'http://10.0.2.2:3000/restaurants/menus/categories',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'Post',
+        body: JSON.stringify({
+          name: item.name,
+        }),
+      },
+    );
+    const responseJsaon = await response.json();
+    await console.log(responseJsaon);
+    const status = await responseJsaon.status;
+    await console.log(status);
+    if (status == 200) {
+      this.props.navigation.navigate('CategoriesFoodScreen');
+    }
+  }
   render() {
-    const {item} = this.props;
+    const {item, navigation} = this.props;
     return (
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontFamily: 'IRANSansMobile'}}>{item.name}</Text>
-        <Image
-          resizeMode={'stretch'}
-          style={{width: 100, height: 100}}
-          source={require('../../../assets/img/food3.jpg')}
-        />
-      </View>
+      <TouchableOpacity
+        onPress={this.clickItem.bind(this, item)}
+        style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <ImageBackground
+            resizeMode={'stretch'}
+            imageStyle={{borderRadius:20}}
+            style={{width: 100, height: 100, borderRadius: 20, margin: 10,alignItems:'center',elevation:20}}
+            source={item.img}>
+            <Text style={{fontFamily: 'IRANSansMobile',color:'white',backgroundColor:'black',margin:5,padding:5,marginTop:-20,borderRadius:20,opacity:0.8}}>{item.name}</Text>
+          </ImageBackground>
+        </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -153,10 +191,13 @@ class Home extends Component {
     this.refs.myModal.modalOpen();
   }
   async getDataFromCategoriesApi() {
-    const response = await fetch('http://10.0.2.2:3000/api/categories');
-    const responseJsaon = await response.json();
+    // const response = await fetch('http://10.0.2.2:3000/api/categories');
+    // const responseJsaon = await response.json();
+    // await this.setState({
+    //   categories: responseJsaon,
+    // });
     await this.setState({
-      categories: responseJsaon,
+      categories: CatItem,
     });
   }
   async getDataFromPlacesApi() {
@@ -194,7 +235,7 @@ class Home extends Component {
           }
           left={<Icon name={'mail'} style={{color: 'white'}} />}
         />
-        <View style={{flex: 0.4}}>
+        {/* <View style={{flex: 0.4}}>
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
@@ -204,7 +245,7 @@ class Home extends Component {
               return <Places navigation={this.props.navigation} item={item} />;
             }}
           />
-        </View>
+        </View> */}
         <View style={{flex: 0.8}}>
           <View
             style={{
@@ -262,7 +303,9 @@ class Home extends Component {
             horizontal={true}
             data={this.state.categories}
             renderItem={({item, index}) => {
-              return <Categories item={item} />;
+              return (
+                <Categories item={item} navigation={this.props.navigation} />
+              );
             }}
           />
         </View>

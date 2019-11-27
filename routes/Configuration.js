@@ -16,6 +16,7 @@ import Menu from '../routes/pages/restaurants/Tabs/Menu';
 import Information from '../routes/pages/restaurants/Tabs/Information';
 import Menus from './pages/restaurants/Menus';
 import EditRestaurantsInformation from './pages/restaurants/EditRestaurantsInformation';
+import CategoriesFood from './pages/categories/CategoriesFood';
 // const RestaurantsTabs=createBottomTabNavigator({
 
 //   MenuScreen:{
@@ -53,6 +54,9 @@ const Configuration = createStackNavigator(
     },
     RestaurantEditInformationScreen: {
       screen: EditRestaurantsInformation,
+    },
+    CategoriesFoodScreen: {
+      screen: CategoriesFood,
     },
   },
   {
