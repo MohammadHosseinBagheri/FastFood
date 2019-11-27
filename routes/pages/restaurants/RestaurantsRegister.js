@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text,ImageBackground} from 'react-native';
 import MyHeader from '../../../components/Header/MyHeader';
 import {
   Icon,
@@ -94,7 +94,7 @@ class RestaurantsRegister extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#EEEEEE'}}>
+      <ImageBackground resizeMode={'stretch'} source={require('../../../assets/img/registerres.jpg')} style={{flex: 1, backgroundColor: '#EEEEEE'}}>
         <MyHeader
           left={
             <Icon
@@ -119,7 +119,7 @@ class RestaurantsRegister extends Component {
             </Text>
           }
         />
-        <View style={{margin: 20}}>
+        <View style={{margin: 20,opacity:0.6}}>
           <Card style={{borderRadius: 20}}>
             <CardItem style={{borderRadius: 20}} header>
               <Body style={{alignItems: 'center'}}>
@@ -244,7 +244,7 @@ class RestaurantsRegister extends Component {
             <Icon name={'restaurant'} />
           </Button>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
