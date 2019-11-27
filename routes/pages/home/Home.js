@@ -78,9 +78,12 @@ class Basicitem extends Component {
                     style={{
                       padding: 10,
                       borderColor: '#E91E63',
-                      borderWidth: 3,
+                      borderWidth: 1,
+                      backgroundColor:'white',
+                      borderRadius:10,
+                      elevation:10
                     }}
-                    bordered
+                    
                     onPress={() =>
                       this.props.navigation.navigate('RestaurantsScreen', {
                         item: item,
