@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text,Alert} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import Modal from 'react-native-modalbox';
 import {Button, Item, Input, Icon, Picker} from 'native-base';
 class AddNewFood extends Component {
@@ -54,7 +54,7 @@ class AddNewFood extends Component {
       ? this.setState({tag: 'سالاد'})
       : itemValue == 5
       ? this.setState({tag: 'نوشیدنی'})
-      : null);
+      : this.setState({tag: 'برگر'}));
   }
   async fecthDataAddMenu() {
     const response = await fetch(
@@ -74,8 +74,8 @@ class AddNewFood extends Component {
       },
     );
     const responseJson = await response.json();
-    console.log(responseJson)
-    
+    console.log(responseJson);
+
     this.refs.addNewFood.close();
   }
   render() {

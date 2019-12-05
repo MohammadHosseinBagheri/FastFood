@@ -135,7 +135,7 @@ class Categories extends Component {
     super(props);
   }
   async clickItem(item) {
-    console.log(item);
+    //console.log(item);
     const response = await fetch(
       'http://10.0.2.2:3000/restaurants/menus/categories',
       {
@@ -148,12 +148,12 @@ class Categories extends Component {
         }),
       },
     );
-    const responseJsaon = await response.json();
-    await console.log(responseJsaon);
-    const status = await responseJsaon.status;
+    const responseJson = await response.json();
+    await console.log(responseJson);
+    const status = await responseJson.status;
     await console.log(status);
     if (status == 200) {
-      this.props.navigation.navigate('CategoriesFoodScreen');
+      this.props.navigation.navigate('CategoriesFoodScreen',data={responseJson,item});
     }
   }
   render() {
