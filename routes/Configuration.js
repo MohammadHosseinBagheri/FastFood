@@ -17,6 +17,7 @@ import Information from '../routes/pages/restaurants/Tabs/Information';
 import Menus from './pages/restaurants/Menus';
 import EditRestaurantsInformation from './pages/restaurants/EditRestaurantsInformation';
 import CategoriesFood from './pages/categories/CategoriesFood';
+import SellingMap from './pages/mapConfiguration/SellingMap';
 // const RestaurantsTabs=createBottomTabNavigator({
 
 //   MenuScreen:{
@@ -57,6 +58,9 @@ const Configuration = createStackNavigator(
     },
     CategoriesFoodScreen: {
       screen: CategoriesFood,
+    },
+    SellingMapScreen: {
+      screen: SellingMap,
     },
   },
   {

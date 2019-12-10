@@ -21,7 +21,9 @@ class Menus extends Component {
             height: 30,
             justifyContent: 'center',
             backgroundColor: '#FF7043',
-          }}>
+          }}
+          onPress={()=>console.log('ok',item)}
+          >
           <Text
             style={{
               fontFamily: 'IRANSansMobile_Bold',
