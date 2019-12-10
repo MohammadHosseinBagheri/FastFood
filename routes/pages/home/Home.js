@@ -151,9 +151,10 @@ class Categories extends Component {
     const responseJson = await response.json();
     await console.log(responseJson);
     const status = await responseJson.status;
-    await console.log(status);
+    //await console.log(status);
     if (status == 200) {
       this.props.navigation.navigate('CategoriesFoodScreen',data={responseJson,item});
+      return
     }
   }
   render() {
