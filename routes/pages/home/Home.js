@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  Alert
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import MyHeader from '../../../components/Header/MyHeader';
@@ -155,6 +156,9 @@ class Categories extends Component {
     if (status == 200) {
       this.props.navigation.navigate('CategoriesFoodScreen',data={responseJson,item});
       return
+    }
+    else{
+      Alert.alert('دسته مورد نظر یافت نشد')
     }
   }
   render() {
