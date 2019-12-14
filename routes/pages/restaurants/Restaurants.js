@@ -22,7 +22,7 @@ class Menus extends Component {
             justifyContent: 'center',
             backgroundColor: '#FF7043',
           }}
-          onPress={()=>console.log('ok',item)}
+          onPress={()=>this.props.navigation.navigate('SellingMapScreen',data=this.props)}
           >
           <Text
             style={{
@@ -219,7 +219,7 @@ class Restaurants extends Component {
           <FlatList
             data={this.state.foods}
             renderItem={({item}) => {
-              return <Menus item={item} />;
+              return <Menus item={item} navigation={this.props.navigation} />;
             }}
           />
         </View>

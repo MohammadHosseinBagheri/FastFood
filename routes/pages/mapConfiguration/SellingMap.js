@@ -1,20 +1,54 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow
+ */
 
-class SellingMap extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+import React from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  StatusBar,
+} from 'react-native';
 
-  render() {
-    return (
-      <View>
-        <Text> SellingMap </Text>
-      </View>
-    );
-  }
-}
+import {
+  Header,
+  LearnMoreLinks,
+  Colors,
+  DebugInstructions,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
 
-export default SellingMap;
+import MapView from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+const styles = StyleSheet.create({
+ container: {
+   ...StyleSheet.absoluteFillObject,
+   flex:1,
+   justifyContent: 'flex-end',
+   alignItems: 'center',
+ },
+ map: {
+   ...StyleSheet.absoluteFillObject,
+ },
+});
+
+export default () => (
+   <View style={[styles.container,{flex:1}]}>
+     <MapView
+        // remove if not using Google Maps
+       style={styles.map}
+       region={{
+         latitude: 37.78825,
+         longitude: -122.4324,
+         latitudeDelta: 0.015,
+         longitudeDelta: 0.0121,
+       }}
+     >
+     </MapView>
+   </View>
+);
