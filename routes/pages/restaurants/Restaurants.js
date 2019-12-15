@@ -3,6 +3,12 @@ import {View, Text, view, ImageBackground, FlatList, Image} from 'react-native';
 import {Icon, Button} from 'native-base';
 import StarRating from 'react-native-star-rating';
 class Menus extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0,
+    };
+  }
   render() {
     const {item} = this.props;
     return (
@@ -22,8 +28,17 @@ class Menus extends Component {
             justifyContent: 'center',
             backgroundColor: '#FF7043',
           }}
-          onPress={()=>this.props.navigation.navigate('SellingMapScreen',data=this.props)}
-          >
+          onPress={() =>{
+            const data={
+              dataItem:this.props,
+              count:this.state.count
+            }
+            this.props.navigation.navigate(
+              'SellingMapScreen',data
+            )
+          }
+            
+          }>
           <Text
             style={{
               fontFamily: 'IRANSansMobile_Bold',
@@ -33,6 +48,31 @@ class Menus extends Component {
             خرید
           </Text>
         </Button>
+        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <Icon
+            name="add-circle"
+            style={{color: 'green'}}
+            onPress={() => {
+              this.setState({
+                count: this.state.count + 1,
+              });
+            }}
+          />
+          <Text style={{marginLeft: 3, marginRight: 3, fontSize: 16}}>
+            {this.state.count}
+          </Text>
+          <Icon
+            name="remove-circle-outline"
+            style={{color: 'red'}}
+            onPress={() => {
+              if (this.state.count != 0) {
+                this.setState({
+                  count: this.state.count - 1,
+                });
+              }
+            }}
+          />
+        </View>
         <View style={{flex: 1, flexDirection: 'column', marginLeft: 20}}>
           <Text style={{fontFamily: 'IRANSansMobile_Bold', fontSize: 16}}>
             {item.name}
@@ -120,7 +160,7 @@ class Restaurants extends Component {
         'Content-Type': 'application/json',
       },
       method: 'Post',
-      body: JSON.stringify({data:this.state.data})
+      body: JSON.stringify({data: this.state.data}),
     });
     const responseJson = await response.json();
     console.log(responseJson);

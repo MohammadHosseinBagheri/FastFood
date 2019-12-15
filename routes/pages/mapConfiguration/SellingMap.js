@@ -20,16 +20,24 @@ export default class SellingMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      data: null,
       latitude: 2000,
       longitude: 2000,
       markers: [],
       mabda: 0,
       maghsad: 0,
       distanceKm: 0,
+      money: 0,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.setState({
+      data: this.props.navigation.state.params,
+    });
+    await console.log(this.state.data);
+
+    console.log(this.props);
     Geolocation.getCurrentPosition(
       position => {
         console.log(position);
@@ -62,6 +70,7 @@ export default class SellingMap extends Component {
           mabda: e.nativeEvent.coordinate,
         });
         console.log(this.state.mabda);
+        return
       } else {
         await this.setState({
           maghsad: e.nativeEvent.coordinate,
@@ -77,6 +86,14 @@ export default class SellingMap extends Component {
       distanceKm: distance,
     });
     //await console.log(this.state.distanceKm);
+    this.calculateMoney(this.state.distanceKm);
+  }
+  calculateMoney(dis) {
+    const foodMoney =
+      this.state.data.count * this.state.data.dataItem.item.price;
+    const distMoney = dis * 1500;
+    const finalMoney = foodMoney + distMoney;
+    console.log(finalMoney);
   }
   render() {
     return (
