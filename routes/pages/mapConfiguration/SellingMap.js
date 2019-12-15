@@ -1,23 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Component} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
-
-import MapView, {Marker, ProviderPropType} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import getDistance from 'geolib/es/getDistance';
+import {convertDistance} from 'geolib';
+import MapView, {Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -37,6 +23,9 @@ export default class SellingMap extends Component {
       latitude: 2000,
       longitude: 2000,
       markers: [],
+      mabda: 0,
+      maghsad: 0,
+      distanceKm: 0,
     };
   }
 
@@ -59,7 +48,7 @@ export default class SellingMap extends Component {
   }
   async onMapPress(e) {
     if (this.state.markers.length <= 1) {
-      await this.setState({
+      this.setState({
         markers: [
           ...this.state.markers,
           {
@@ -68,8 +57,32 @@ export default class SellingMap extends Component {
           },
         ],
       });
-      console.log(this.state.markers);
+      if (this.state.markers.length == 0) {
+        await this.setState({
+          mabda: e.nativeEvent.coordinate,
+        });
+        console.log(this.state.mabda);
+      } else {
+        await this.setState({
+          maghsad: e.nativeEvent.coordinate,
+        });
+      }
+      console.log(this.state.maghsad);
     }
+    // console.log(
+    //   this.state.mabdalat,
+    //   this.state.mabdalgn,
+    //   this.state.maghsadlat,
+    //   this.state.maghsadlgn,
+    // );
+    let distance = await getDistance(this.state.mabda, this.state.maghsad);
+    await console.log(distance);
+    distance = await convertDistance(distance, 'km');
+    console.log(distance);
+    await this.setState({
+      distanceKm: distance,
+    });
+    await console.log(this.state.distanceKm);
   }
   render() {
     return (
@@ -98,7 +111,11 @@ export default class SellingMap extends Component {
                 latitude: marker.coordinate.latitude,
                 longitude: marker.coordinate.longitude,
               }}
-              icon={marker.key==0? require('../../../assets/img/mabda.png'):require('../../../assets/img/maghsad.png')}
+              icon={
+                marker.key == 0
+                  ? require('../../../assets/img/mabda.png')
+                  : require('../../../assets/img/maghsad.png')
+              }
               key={marker.key}
               title={marker.key == 0 ? 'مبدا من' : 'مقصد من'}
             />
