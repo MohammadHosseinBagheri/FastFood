@@ -69,20 +69,14 @@ export default class SellingMap extends Component {
       }
       console.log(this.state.maghsad);
     }
-    // console.log(
-    //   this.state.mabdalat,
-    //   this.state.mabdalgn,
-    //   this.state.maghsadlat,
-    //   this.state.maghsadlgn,
-    // );
     let distance = await getDistance(this.state.mabda, this.state.maghsad);
-    await console.log(distance);
+    //await console.log(distance);
     distance = await convertDistance(distance, 'km');
-    console.log(distance);
+    //console.log(distance);
     await this.setState({
       distanceKm: distance,
     });
-    await console.log(this.state.distanceKm);
+    //await console.log(this.state.distanceKm);
   }
   render() {
     return (
