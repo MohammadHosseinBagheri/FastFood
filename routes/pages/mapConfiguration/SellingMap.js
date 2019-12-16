@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View,Text} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import getDistance from 'geolib/es/getDistance';
 import {convertDistance} from 'geolib';
 import MapView, {Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import SellinModal from './SellinModal';
+import {Button} from 'native-base';
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -36,7 +38,7 @@ export default class SellingMap extends Component {
       data: this.props.navigation.state.params,
     });
     await console.log(this.state.data);
-
+    
     console.log(this.props);
     Geolocation.getCurrentPosition(
       position => {
@@ -52,48 +54,54 @@ export default class SellingMap extends Component {
         console.log(error.code, error.message);
       },
       {enableHighAccuracy: true, timeout: 20000},
-    );
-  }
-  async onMapPress(e) {
-    if (this.state.markers.length <= 1) {
-      this.setState({
-        markers: [
-          ...this.state.markers,
-          {
-            coordinate: e.nativeEvent.coordinate,
-            key: this.state.markers.length,
-          },
-        ],
-      });
-      if (this.state.markers.length == 0) {
-        await this.setState({
-          mabda: e.nativeEvent.coordinate,
-        });
-        console.log(this.state.mabda);
-        return
-      } else {
-        await this.setState({
-          maghsad: e.nativeEvent.coordinate,
-        });
-      }
-      console.log(this.state.maghsad);
+      );
     }
-    let distance = await getDistance(this.state.mabda, this.state.maghsad);
-    //await console.log(distance);
-    distance = await convertDistance(distance, 'km');
-    //console.log(distance);
-    await this.setState({
-      distanceKm: distance,
-    });
-    //await console.log(this.state.distanceKm);
-    this.calculateMoney(this.state.distanceKm);
-  }
-  calculateMoney(dis) {
-    const foodMoney =
-      this.state.data.count * this.state.data.dataItem.item.price;
-    const distMoney = dis * 1500;
-    const finalMoney = foodMoney + distMoney;
-    console.log(finalMoney);
+    async onMapPress(e) {
+      if (this.state.markers.length <= 1) {
+        this.setState({
+          markers: [
+            ...this.state.markers,
+            {
+              coordinate: e.nativeEvent.coordinate,
+              key: this.state.markers.length,
+            },
+          ],
+        });
+        if (this.state.markers.length == 0) {
+          await this.setState({
+            mabda: e.nativeEvent.coordinate,
+          });
+          console.log(this.state.mabda);
+          return;
+        } else {
+          await this.setState({
+            maghsad: e.nativeEvent.coordinate,
+          });
+        }
+        console.log(this.state.maghsad);
+      }
+      let distance = await getDistance(this.state.mabda, this.state.maghsad);
+      //await console.log(distance);
+      distance = await convertDistance(distance, 'km');
+      //console.log(distance);
+      await this.setState({
+        distanceKm: distance,
+      });
+      //await console.log(this.state.distanceKm);
+      await this.calculateMoney(this.state.distanceKm);
+    }
+    openModal() {
+      this.refs.SellingModal.open();
+    }
+  async  calculateMoney(dis) {
+      const foodMoney =await this.state.data.count * this.state.data.dataItem.item.price;
+      const distMoney =await dis * 1500;
+      const finalMoney =await foodMoney + distMoney;
+      await this.setState({
+        money:finalMoney
+      })
+      console.log(this.state.money);
+      await this.openModal()
   }
   render() {
     return (
@@ -132,6 +140,8 @@ export default class SellingMap extends Component {
             />
           ))}
         </MapView>
+        
+        <SellinModal ref={'SellingModal'}  data={this.state.money} />
       </View>
     );
   }
