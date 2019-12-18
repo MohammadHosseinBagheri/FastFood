@@ -28,17 +28,18 @@ class Menus extends Component {
             justifyContent: 'center',
             backgroundColor: '#FF7043',
           }}
-          onPress={() =>{
-            const data={
-              dataItem:this.props,
-              count:this.state.count
+          onPress={() => {
+            const data = {
+              dataItem: this.props,
+              count: this.state.count,
+            };
+            if (this.state.count == 0) {
+              alert('سبد خرید خالی است');
+              return;
+            } else {
+              this.props.navigation.navigate('SellingMapScreen', data);
             }
-            this.props.navigation.navigate(
-              'SellingMapScreen',data
-            )
-          }
-            
-          }>
+          }}>
           <Text
             style={{
               fontFamily: 'IRANSansMobile_Bold',
