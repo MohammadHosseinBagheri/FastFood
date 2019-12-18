@@ -29,9 +29,58 @@ class EditRestaurantsInformation extends Component {
       restaurantManagerPhone: data.managePhone,
     });
   }
+  async fetchDataToUpdate() {
+    const response = await fetch('http://10.0.2.2:3000/restaurants/update', {
+      method: 'Post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        data: this.state.data,
+        restaurantName: this.state.restaurantName,
+        restaurantCity: this.state.restaurantCity,
+        restaurantAddress: this.state.restaurantAddress,
+        restaurantTelephone: this.state.restaurantTelephone,
+        restaurantMangerName: this.state.restaurantMangerName,
+        restaurantManagerPhone: this.state.restaurantManagerPhone,
+      }),
+    });
+    const responseJson = await response.json();
+    console.log(responseJson);
+  }
+  onChangeResName(txt) {
+    this.setState({
+      restaurantName: txt,
+    });
+  }
+  onChangeResCity(txt) {
+    this.setState({
+      restaurantCity: txt,
+    });
+  }
+  onChangeResAddr(txt) {
+    this.setState({
+      restaurantAddress: txt,
+    });
+  }
+  onChangeResTel(txt) {
+    this.setState({
+      restaurantTelephone: txt,
+    });
+  }
+  onChangeResManagerName(txt) {
+    this.setState({
+      restaurantMangerName: txt,
+    });
+  }
+  onChangeResManagerPhone(txt) {
+    this.setState({
+      restaurantManagerPhone: txt,
+    });
+  }
   render() {
     return (
-      <View style={{flex:1,backgroundColor:'#EEEEEE'}}>
+      <View style={{flex: 1, backgroundColor: '#EEEEEE'}}>
         <MyHeader
           left={
             <Icon
@@ -54,9 +103,9 @@ class EditRestaurantsInformation extends Component {
             </Text>
           }
         />
-        <View style={{flex:1,margin:10,borderRadius:10}} >
-          <Card style={{borderRadius:10}}>
-            <CardItem style={{borderRadius:10}}>
+        <View style={{flex: 1, margin: 10, borderRadius: 10}}>
+          <Card style={{borderRadius: 10}}>
+            <CardItem style={{borderRadius: 10}}>
               <Item>
                 <Input
                   style={{
@@ -66,6 +115,7 @@ class EditRestaurantsInformation extends Component {
                   }}
                   placeholder={'نام رستوران'}
                   defaultValue={this.state.restaurantName}
+                  onChangeText={this.onChangeResName.bind(this)}
                 />
                 <Icon name={'restaurant'} style={{color: '#E91E63'}} />
               </Item>
@@ -80,6 +130,7 @@ class EditRestaurantsInformation extends Component {
                   }}
                   placeholder={'نام شهر'}
                   defaultValue={this.state.restaurantCity}
+                  onChangeText={this.onChangeResCity.bind(this)}
                 />
                 <Icon name={'pin'} style={{color: '#E91E63'}} />
               </Item>
@@ -94,6 +145,7 @@ class EditRestaurantsInformation extends Component {
                   }}
                   placeholder={'آدرس '}
                   defaultValue={this.state.restaurantAddress}
+                  onChangeText={this.onChangeResAddr.bind(this)}
                 />
                 <Icon name={'pin'} style={{color: '#E91E63'}} />
               </Item>
@@ -108,6 +160,7 @@ class EditRestaurantsInformation extends Component {
                   }}
                   placeholder={'تلفن رستوران '}
                   defaultValue={this.state.restaurantTelephone}
+                  onChangeText={this.onChangeResTel.bind(this)}
                 />
                 <Icon name={'call'} style={{color: '#E91E63'}} />
               </Item>
@@ -122,6 +175,7 @@ class EditRestaurantsInformation extends Component {
                   }}
                   placeholder={'نام و نام خانوادگی مدیر رستوران'}
                   defaultValue={this.state.restaurantMangerName}
+                  onChangeText={this.onChangeResManagerName.bind(this)}
                 />
                 <Icon name={'person'} style={{color: '#E91E63'}} />
               </Item>
@@ -136,20 +190,22 @@ class EditRestaurantsInformation extends Component {
                   }}
                   placeholder={'شماره موبایل مدیر رستوران '}
                   defaultValue={this.state.restaurantManagerPhone}
+                  onChangeText={this.onChangeResManagerPhone.bind(this)}
                 />
                 <Icon name={'calculator'} style={{color: '#E91E63'}} />
               </Item>
             </CardItem>
           </Card>
         </View>
-        <View style={{flex:1,flexDirection: 'column-reverse'}}>
+        <View style={{flex: 1, flexDirection: 'column-reverse'}}>
           <Button
             style={{
               backgroundColor: '#E91E63',
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
               justifyContent: 'center',
-            }}>
+            }}
+            onPress={this.fetchDataToUpdate.bind(this)}>
             <Text
               style={{
                 color: 'white',

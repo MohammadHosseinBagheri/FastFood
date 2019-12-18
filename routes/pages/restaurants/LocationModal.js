@@ -74,12 +74,14 @@ class LocationModal extends Component {
     const status = await responseJson.status;
     console.log(status);
     const data = await responseJson.data;
-    console.log(data)
-    if (await status != 200) {
+    console.log(data);
+    if ((await status) != 200) {
       alert('لوکیشن را درست انتخاب کنید');
       return;
     } else {
-      await this.props.navigation.replace('RestaurantsManagementScreen',{data:{data}});
+      await this.props.navigation.replace('RestaurantsManagementScreen', {
+        data: {data},
+      });
     }
   }
   render() {
@@ -95,6 +97,11 @@ class LocationModal extends Component {
               latitudeDelta: 0.015,
               longitudeDelta: 0.0121,
             }}
+            showsCompass={true}
+            showsUserLocation={true}
+            showsBuildings={true}
+            showsTraffic={true}
+            showsIndoorLevelPicker={true}
             onPress={this.onMapPress.bind(this)}>
             <Marker
               icon={require('../../../assets/img/mabda.png')}
