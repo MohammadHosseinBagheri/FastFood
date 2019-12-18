@@ -6,8 +6,8 @@ import AddNewFood from './Modal/AddNewFood';
 import Swipeout from 'react-native-swipeout';
 
 class ShowMenu extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       activeRowKey: null,
       data: null,
@@ -50,7 +50,13 @@ class ShowMenu extends Component {
       {
         text: 'حذف',
         type: 'delete',
-        onPress: this.fetchDataToRemove.bind(this, item),
+        onPress: () => {
+          this.fetchDataToRemove(item);
+          //console.log(this.state.activeRowKey);
+          const deleteKey = item._id;
+          //console.log(deleteKey)
+          this.props.parentFlatList.refresh(deleteKey);
+        },
       },
       {
         text: 'ویرایش',
@@ -197,9 +203,15 @@ class Menus extends Component {
     this.state = {
       data: [],
       restaurantData: '',
+      deleteRowKey: null,
     };
   }
-  addNewFood() {}
+  refresh(index) {
+    this.setState({
+      deleteRowKey: index,
+    });
+    // this.refs.flatList.scrollTop=2
+  }
   async componentDidMount() {
     //console.log(this.props);
     const dataServer = await this.props.navigation.state.params.Menudata;
@@ -261,10 +273,13 @@ class Menus extends Component {
         </View>
         <FlatList
           data={this.state.data}
-          extraData={this.state.data}
+          extraData={this.state.deleteRowKey}
           keyExtractor={({item}) => item}
           numColumns={1}
-          renderItem={({item}) => <ShowMenu item={item} />}
+          ref={'flatList'}
+          renderItem={({item}) => (
+            <ShowMenu item={item} parentFlatList={this} />
+          )}
         />
         <AddNewFood
           ref={'addNewFood'}
