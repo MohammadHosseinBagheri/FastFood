@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text,ImageBackground} from 'react-native';
+import {View, Text, ImageBackground} from 'react-native';
 import MyHeader from '../../../components/Header/MyHeader';
-import {
-  Icon,
-  Card,
-  CardItem,
-  Header,
-  Content,
-  Body,
-  Item,
-  Input,
-  Button,
-} from 'native-base';
+import {Icon, Card, CardItem, Body, Item, Input, Button} from 'native-base';
 class RestaurantsRegister extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +13,8 @@ class RestaurantsRegister extends Component {
       manageName: '',
       managePhone: '',
       error: false,
+      hidenBtn: false,
+      id: 0,
     };
   }
   onChangeRestaurantName(text) {
@@ -71,10 +63,19 @@ class RestaurantsRegister extends Component {
       }),
     });
     const responseJson = await response.json();
-    await console.log(responseJson);
+    const data = await responseJson;
+    const resId = await data.id;
+    console.log(responseJson);
+    const status = await responseJson.status;
+    //await console.log(resId);
+    this.setState({
+      id: resId,
+    });
+    // await console.log(this.state.id);
+    return status;
   }
-  onRegisterClick() {
-      //console.log(this.state)
+  async onRegisterClick() {
+    //console.log(this.state)
     if (
       this.state.address == '' ||
       this.state.cistyName == '' ||
@@ -88,13 +89,22 @@ class RestaurantsRegister extends Component {
       });
       return;
     } else {
-        console.log('ok')
-      this.fetchDataToRegisterRestaurant();
+      console.log('ok');
+      if ((await this.fetchDataToRegisterRestaurant()) == 200) {
+        const myId = await this.state.id;
+        await this.props.navigation.replace('MapResRegister', (id = {myId}));
+        return;
+      } else {
+        await alert('این رستوران موجود است');
+      }
     }
   }
   render() {
     return (
-      <ImageBackground resizeMode={'stretch'} source={require('../../../assets/img/registerres.jpg')} style={{flex: 1, backgroundColor: '#EEEEEE'}}>
+      <ImageBackground
+        resizeMode={'stretch'}
+        source={require('../../../assets/img/registerres.jpg')}
+        style={{flex: 1, backgroundColor: '#EEEEEE'}}>
         <MyHeader
           left={
             <Icon
@@ -119,7 +129,7 @@ class RestaurantsRegister extends Component {
             </Text>
           }
         />
-        <View style={{margin: 20,opacity:0.6}}>
+        <View style={{margin: 20, opacity: 0.6}}>
           <Card style={{borderRadius: 20}}>
             <CardItem style={{borderRadius: 20}} header>
               <Body style={{alignItems: 'center'}}>
@@ -143,7 +153,7 @@ class RestaurantsRegister extends Component {
                   onChangeText={this.onChangeRestaurantName.bind(this)}
                   placeholder={'نام رستوران'}
                 />
-                <Icon name={'restaurant'} style={{color:'#E91E63'}} />
+                <Icon name={'restaurant'} style={{color: '#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -157,7 +167,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'نام شهر'}
                   onChangeText={this.onChangeCityName.bind(this)}
                 />
-                <Icon name={'pin'} style={{color:'#E91E63'}} />
+                <Icon name={'pin'} style={{color: '#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -171,7 +181,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'آدرس '}
                   onChangeText={this.onChangeAddress.bind(this)}
                 />
-                <Icon name={'pin'} style={{color:'#E91E63'}} />
+                <Icon name={'pin'} style={{color: '#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -185,7 +195,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'تلفن رستوران '}
                   onChangeText={this.onChangeRestaurantPhone.bind(this)}
                 />
-                <Icon name={'call'} style={{color:'#E91E63'}} />
+                <Icon name={'call'} style={{color: '#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem>
@@ -199,7 +209,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'نام و نام خانوادگی مدیر رستوران'}
                   onChangeText={this.onChangeMaanageName.bind(this)}
                 />
-                <Icon name={'person'} style={{color:'#E91E63'}} />
+                <Icon name={'person'} style={{color: '#E91E63'}} />
               </Item>
             </CardItem>
             <CardItem style={{borderRadius: 20, borderBottomColor: 'white'}}>
@@ -213,7 +223,7 @@ class RestaurantsRegister extends Component {
                   placeholder={'شماره موبایل مدیر رستوران '}
                   onChangeText={this.onChangeManagePhone.bind(this)}
                 />
-                <Icon name={'calculator'} style={{color:'#E91E63'}} />
+                <Icon name={'calculator'} style={{color: '#E91E63'}} />
               </Item>
             </CardItem>
           </Card>
@@ -231,6 +241,7 @@ class RestaurantsRegister extends Component {
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
               justifyContent: 'center',
+              // display:(this.state.hidenBtn?'none':'flex')
             }}
             onPress={this.onRegisterClick.bind(this)}>
             <Text
