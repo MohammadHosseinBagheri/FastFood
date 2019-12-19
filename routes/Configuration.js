@@ -19,6 +19,8 @@ import EditRestaurantsInformation from './pages/restaurants/EditRestaurantsInfor
 import CategoriesFood from './pages/categories/CategoriesFood';
 import SellingMap from './pages/mapConfiguration/SellingMap';
 import LocationModal from './pages/restaurants/LocationModal';
+import Deliver from './pages/restaurants/Deliver';
+import RegisterDeliver from './pages/restaurants/RegisterDeliver';
 // const RestaurantsTabs=createBottomTabNavigator({
 
 //   MenuScreen:{
@@ -63,9 +65,15 @@ const Configuration = createStackNavigator(
     SellingMapScreen: {
       screen: SellingMap,
     },
-    MapResRegister:{
-      screen:LocationModal
-    }
+    MapResRegister: {
+      screen: LocationModal,
+    },
+    DeliverScreen: {
+      screen: Deliver,
+    },
+    RegisterDeliverScreen: {
+      screen: RegisterDeliver,
+    },
   },
   {
     headerMode: 'none',
