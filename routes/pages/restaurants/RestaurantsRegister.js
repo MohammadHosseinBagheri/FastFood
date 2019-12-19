@@ -11,10 +11,12 @@ class RestaurantsRegister extends Component {
       address: '',
       restaurantPhone: '',
       manageName: '',
+      manageLastName: '',
       managePhone: '',
       error: false,
       hidenBtn: false,
       id: 0,
+      adminError: false,
     };
   }
   onChangeRestaurantName(text) {
@@ -47,7 +49,13 @@ class RestaurantsRegister extends Component {
       managePhone: text,
     });
   }
+  onChangeMaanageLastName(text) {
+    this.setState({
+      manageLastName: text,
+    });
+  }
   async fetchDataToRegisterRestaurant() {
+    await this.fetchDataToRegisterAdminRestaurant();
     const response = await fetch('http://10.0.2.2:3000/restaurants/register', {
       method: 'Post',
       headers: {
@@ -74,6 +82,29 @@ class RestaurantsRegister extends Component {
     // await console.log(this.state.id);
     return status;
   }
+  async fetchDataToRegisterAdminRestaurant() {
+    const response = await fetch('http://10.0.2.2:3000/users/register', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'Post',
+      body: JSON.stringify({
+        phone: this.state.managePhone,
+        name: this.state.manageName,
+        lastName: this.state.manageLastName,
+        tag: 'admin',
+        password: '123456',
+      }),
+    });
+    const responseJson = await response.json();
+    console.log(responseJson);
+    const status = responseJson.status;
+    if (status == 202) {
+      this.setState({
+        adminError: true,
+      });
+    }
+  }
   async onRegisterClick() {
     //console.log(this.state)
     if (
@@ -87,15 +118,23 @@ class RestaurantsRegister extends Component {
       this.setState({
         error: true,
       });
+      alert('همه فیلد ها پر شود');
       return;
     } else {
       console.log('ok');
-      if ((await this.fetchDataToRegisterRestaurant()) == 200) {
+      if (
+        (await this.fetchDataToRegisterRestaurant()) == 200 &&
+        this.state.adminError == false
+      ) {
         const myId = await this.state.id;
         await this.props.navigation.replace('MapResRegister', (id = {myId}));
         return;
       } else {
-        await alert('این رستوران موجود است');
+        await alert(' این رستوران موجود است ویا ادمین قبلا ثبت نام کرده است ');
+        await this.setState({
+          adminError: false,
+        });
+        return;
       }
     }
   }
@@ -206,8 +245,22 @@ class RestaurantsRegister extends Component {
                     fontFamily: 'IRANSansMobile_Medium',
                     fontSize: 13,
                   }}
-                  placeholder={'نام و نام خانوادگی مدیر رستوران'}
+                  placeholder={'نام مدیر رستوران'}
                   onChangeText={this.onChangeMaanageName.bind(this)}
+                />
+                <Icon name={'person'} style={{color: '#E91E63'}} />
+              </Item>
+            </CardItem>
+            <CardItem>
+              <Item>
+                <Input
+                  style={{
+                    textAlign: 'center',
+                    fontFamily: 'IRANSansMobile_Medium',
+                    fontSize: 13,
+                  }}
+                  placeholder={'نام خانوادگی مدیر رستوران'}
+                  onChangeText={this.onChangeMaanageLastName.bind(this)}
                 />
                 <Icon name={'person'} style={{color: '#E91E63'}} />
               </Item>
