@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, ImageBackground} from 'react-native';
+import {View, Text, ImageBackground, ScrollView} from 'react-native';
 import MyHeader from '../../../components/Header/MyHeader';
 import {Icon, Card, CardItem, Body, Item, Input, Button} from 'native-base';
 class RestaurantsRegister extends Component {
@@ -13,6 +13,7 @@ class RestaurantsRegister extends Component {
       manageName: '',
       manageLastName: '',
       managePhone: '',
+      adminPassword: '',
       error: false,
       hidenBtn: false,
       id: 0,
@@ -54,6 +55,11 @@ class RestaurantsRegister extends Component {
       manageLastName: text,
     });
   }
+  onChangeAdminPassword(text) {
+    this.setState({
+      adminPassword: text,
+    });
+  }
   async fetchDataToRegisterRestaurant() {
     await this.fetchDataToRegisterAdminRestaurant();
     const response = await fetch('http://10.0.2.2:3000/restaurants/register', {
@@ -93,7 +99,7 @@ class RestaurantsRegister extends Component {
         name: this.state.manageName,
         lastName: this.state.manageLastName,
         tag: 'admin',
-        password: '123456',
+        password: this.state.adminPassword,
       }),
     });
     const responseJson = await response.json();
@@ -113,7 +119,9 @@ class RestaurantsRegister extends Component {
       this.state.manageName == '' ||
       this.state.managePhone == '' ||
       this.state.restaurantName == '' ||
-      this.state.restaurantPhone == ''
+      this.state.restaurantPhone == '' ||
+      this.state.manageLastName == '' ||
+      this.state.adminPassword == ''
     ) {
       this.setState({
         error: true,
@@ -140,175 +148,191 @@ class RestaurantsRegister extends Component {
   }
   render() {
     return (
-      <ImageBackground
-        resizeMode={'stretch'}
-        source={require('../../../assets/img/registerres.jpg')}
-        style={{flex: 1, backgroundColor: '#EEEEEE'}}>
-        <MyHeader
-          left={
-            <Icon
-              style={{color: 'white'}}
-              name={'arrow-round-back'}
-              onPress={() => {
-                this.props.navigation.pop();
-              }}
-            />
-          }
-          body={
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: 'IRANSansMobile_Bold',
-                fontSize: 18,
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
-              }}>
-              ثبت رستوران
-            </Text>
-          }
-        />
-        <View style={{margin: 20, opacity: 0.6}}>
-          <Card style={{borderRadius: 20}}>
-            <CardItem style={{borderRadius: 20}} header>
-              <Body style={{alignItems: 'center'}}>
-                <Text
-                  style={{
-                    fontFamily: 'IRANSansMobile_Bold',
-                    textAlign: 'center',
-                  }}>
-                  لطفا اطلاعات دقیق را وارد کنید
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Item>
-                <Input
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'IRANSansMobile_Medium',
-                    fontSize: 13,
-                  }}
-                  onChangeText={this.onChangeRestaurantName.bind(this)}
-                  placeholder={'نام رستوران'}
-                />
-                <Icon name={'restaurant'} style={{color: '#E91E63'}} />
-              </Item>
-            </CardItem>
-            <CardItem>
-              <Item>
-                <Input
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'IRANSansMobile_Medium',
-                    fontSize: 13,
-                  }}
-                  placeholder={'نام شهر'}
-                  onChangeText={this.onChangeCityName.bind(this)}
-                />
-                <Icon name={'pin'} style={{color: '#E91E63'}} />
-              </Item>
-            </CardItem>
-            <CardItem>
-              <Item>
-                <Input
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'IRANSansMobile_Medium',
-                    fontSize: 13,
-                  }}
-                  placeholder={'آدرس '}
-                  onChangeText={this.onChangeAddress.bind(this)}
-                />
-                <Icon name={'pin'} style={{color: '#E91E63'}} />
-              </Item>
-            </CardItem>
-            <CardItem>
-              <Item>
-                <Input
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'IRANSansMobile_Medium',
-                    fontSize: 13,
-                  }}
-                  placeholder={'تلفن رستوران '}
-                  onChangeText={this.onChangeRestaurantPhone.bind(this)}
-                />
-                <Icon name={'call'} style={{color: '#E91E63'}} />
-              </Item>
-            </CardItem>
-            <CardItem>
-              <Item>
-                <Input
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'IRANSansMobile_Medium',
-                    fontSize: 13,
-                  }}
-                  placeholder={'نام مدیر رستوران'}
-                  onChangeText={this.onChangeMaanageName.bind(this)}
-                />
-                <Icon name={'person'} style={{color: '#E91E63'}} />
-              </Item>
-            </CardItem>
-            <CardItem>
-              <Item>
-                <Input
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'IRANSansMobile_Medium',
-                    fontSize: 13,
-                  }}
-                  placeholder={'نام خانوادگی مدیر رستوران'}
-                  onChangeText={this.onChangeMaanageLastName.bind(this)}
-                />
-                <Icon name={'person'} style={{color: '#E91E63'}} />
-              </Item>
-            </CardItem>
-            <CardItem style={{borderRadius: 20, borderBottomColor: 'white'}}>
-              <Item style={{borderBottomColor: 'white'}}>
-                <Input
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'IRANSansMobile_Medium',
-                    fontSize: 13,
-                  }}
-                  placeholder={'شماره موبایل مدیر رستوران '}
-                  onChangeText={this.onChangeManagePhone.bind(this)}
-                />
-                <Icon name={'calculator'} style={{color: '#E91E63'}} />
-              </Item>
-            </CardItem>
-          </Card>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column-reverse',
-            margin: 10,
-            marginBottom: 0,
-          }}>
-          <Button
+      <ScrollView>
+        <ImageBackground
+          resizeMode={'stretch'}
+          source={require('../../../assets/img/registerres.jpg')}
+          style={{flex: 1, backgroundColor: '#EEEEEE'}}>
+          <MyHeader
+            left={
+              <Icon
+                style={{color: 'white'}}
+                name={'arrow-round-back'}
+                onPress={() => {
+                  this.props.navigation.pop();
+                }}
+              />
+            }
+            body={
+              <Text
+                style={{
+                  color: 'white',
+                  fontFamily: 'IRANSansMobile_Bold',
+                  fontSize: 18,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                }}>
+                ثبت رستوران
+              </Text>
+            }
+          />
+          <View style={{margin: 20, opacity: 0.6}}>
+            <Card style={{borderRadius: 20}}>
+              <CardItem style={{borderRadius: 20}} header>
+                <Body style={{alignItems: 'center'}}>
+                  <Text
+                    style={{
+                      fontFamily: 'IRANSansMobile_Bold',
+                      textAlign: 'center',
+                    }}>
+                    لطفا اطلاعات دقیق را وارد کنید
+                  </Text>
+                </Body>
+              </CardItem>
+              <CardItem>
+                <Item>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    onChangeText={this.onChangeRestaurantName.bind(this)}
+                    placeholder={'نام رستوران'}
+                  />
+                  <Icon name={'restaurant'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+              <CardItem>
+                <Item>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    placeholder={'نام شهر'}
+                    onChangeText={this.onChangeCityName.bind(this)}
+                  />
+                  <Icon name={'pin'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+              <CardItem>
+                <Item>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    placeholder={'آدرس '}
+                    onChangeText={this.onChangeAddress.bind(this)}
+                  />
+                  <Icon name={'pin'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+              <CardItem>
+                <Item>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    placeholder={'تلفن رستوران '}
+                    onChangeText={this.onChangeRestaurantPhone.bind(this)}
+                  />
+                  <Icon name={'call'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+              <CardItem>
+                <Item>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    placeholder={'نام مدیر رستوران'}
+                    onChangeText={this.onChangeMaanageName.bind(this)}
+                  />
+                  <Icon name={'person'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+              <CardItem>
+                <Item>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    placeholder={'نام خانوادگی مدیر رستوران'}
+                    onChangeText={this.onChangeMaanageLastName.bind(this)}
+                  />
+                  <Icon name={'person'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+              <CardItem style={{borderRadius: 20, borderBottomColor: 'white'}}>
+                <Item style={{borderBottomColor: 'white'}}>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    placeholder={'شماره موبایل مدیر رستوران '}
+                    onChangeText={this.onChangeManagePhone.bind(this)}
+                  />
+                  <Icon name={'calculator'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+              <CardItem style={{borderRadius: 20, borderBottomColor: 'white'}}>
+                <Item style={{borderBottomColor: 'white'}}>
+                  <Input
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'IRANSansMobile_Medium',
+                      fontSize: 13,
+                    }}
+                    placeholder={'پسورد ادمین '}
+                    onChangeText={this.onChangeAdminPassword.bind(this)}
+                  />
+                  <Icon name={'calculator'} style={{color: '#E91E63'}} />
+                </Item>
+              </CardItem>
+            </Card>
+          </View>
+          <View
             style={{
-              backgroundColor: '#E91E63',
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
-              justifyContent: 'center',
-              // display:(this.state.hidenBtn?'none':'flex')
-            }}
-            onPress={this.onRegisterClick.bind(this)}>
-            <Text
+              flex: 1,
+              flexDirection: 'column-reverse',
+              margin: 10,
+              marginBottom: 0,
+            }}>
+            <Button
               style={{
-                color: 'white',
-                fontFamily: 'IRANSansMobile',
-                fontSize: 16,
-              }}>
-              ثبت اطلاعات رستوران
-            </Text>
-            <Icon name={'restaurant'} />
-          </Button>
-        </View>
-      </ImageBackground>
+                backgroundColor: '#E91E63',
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                justifyContent: 'center',
+                // display:(this.state.hidenBtn?'none':'flex')
+              }}
+              onPress={this.onRegisterClick.bind(this)}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontFamily: 'IRANSansMobile',
+                  fontSize: 16,
+                }}>
+                ثبت اطلاعات رستوران
+              </Text>
+              <Icon name={'restaurant'} />
+            </Button>
+          </View>
+        </ImageBackground>
+      </ScrollView>
     );
   }
 }
