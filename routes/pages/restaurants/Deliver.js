@@ -8,9 +8,33 @@ class Item extends Component {
     super();
     this.state = {};
   }
+  async fetchDataToRemoveDeliver() {
+    const data = await this.props.item;
+    console.log(data);
+    const response = await fetch('http://10.0.2.2:3000/users/driver/remove', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'Post',
+      body: JSON.stringify({
+        data: data,
+      }),
+    });
+    const responseJson = await response.json();
+    // console.log(responseJson);
+    const status = await responseJson.status;
+    if (status != 200) {
+      alert('حذف راننده با مشکل روبه رو شد');
+      return;
+    }
+    if (status == 200) {
+      alert('راننده با موفقیت حذف شد');
+      return;
+    }
+  }
 
   render() {
-    const {item} = this.props;
+    const {item, data} = this.props;
     return (
       <View style={{flex: 1, justifyContent: 'center', margin: 5}}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -38,8 +62,12 @@ class Item extends Component {
               </Text>
             </CardItem>
           </Card>
-          <View style={{flexDirection:'row-reverse'}}>
-            <Icon name={'trash'} style={{color: 'red',marginLeft:20}} />
+          <View style={{flexDirection: 'row-reverse'}}>
+            <Icon
+              name={'trash'}
+              style={{color: 'red', marginLeft: 20}}
+              onPress={this.fetchDataToRemoveDeliver.bind(this)}
+            />
             <Icon name={'create'} style={{color: 'green'}} />
           </View>
         </View>
@@ -67,6 +95,7 @@ class Deliver extends Component {
     console.log(this.state.restaurantId);
     this.fetchDataToGetDirver();
   }
+
   async fetchDataToGetDirver() {
     const response = await fetch('http://10.0.2.2:3000/users/driver', {
       headers: {
