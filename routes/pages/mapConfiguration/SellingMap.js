@@ -6,6 +6,7 @@ import {convertDistance} from 'geolib';
 import MapView, {Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import SellinModal from './SellinModal';
 import {Button} from 'native-base';
+import io from 'socket.io-client';
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -38,6 +39,7 @@ export default class SellingMap extends Component {
     await this.setState({
       data: this.props.navigation.state.params,
     });
+
     const navigationData = await this.state.data.dataItem.navigation.state
       .params.item;
     const mabdaCoordinate = await {
@@ -144,7 +146,12 @@ export default class SellingMap extends Component {
             />
           ))}
         </MapView>
-        <SellinModal ref={'SellingModal'} data={this.state.money} />
+        <SellinModal
+          ref={'SellingModal'}
+          data={this.state.money}
+          mabda={this.state.tstMabda}
+          maghsad={this.state.maghsad}
+        />
       </View>
     );
   }
