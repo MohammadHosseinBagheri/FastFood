@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text,Image} from 'react-native';
+import {View, Text, Image, AsyncStorage} from 'react-native';
 import MyHeader from '../../../../components/Header/MyHeader';
 import {Item, Input, Icon, Button} from 'native-base';
 import LoginModal from '../../../../components/Modal/LoginModal';
@@ -37,11 +37,19 @@ class Login extends Component {
     const status = await responseJson.status;
     console.log(responseJson);
     console.log(status);
-    if ((await status) == 404) {
-      this.openModal();
-      return;
+    if (status == 200) {
+      await AsyncStorage.setItem(
+        'user',
+        JSON.stringify(responseJson),
+        error => {
+          if (error) {
+            console.log(error);
+          }
+        },
+      );
+      this.props.navigation.replace('HomeScreen', {data: responseJson});
     } else {
-      console.log('ok');
+      this.openModal();
     }
   }
   async fetchResManager() {
@@ -65,6 +73,7 @@ class Login extends Component {
           data: responseJson,
         }),
       );
+
       return;
     }
   }
@@ -76,6 +85,11 @@ class Login extends Component {
     } else {
       this.fetchUser();
     }
+  }
+  componentDidMount() {
+    AsyncStorage.removeItem('user', error => {
+      console.log(error);
+    });
   }
   render() {
     return (
@@ -91,17 +105,26 @@ class Login extends Component {
             />
           }
           body={
-            <Text style={{fontFamily: 'IRANSansMobile_Bold', fontSize: 18,color:'white'}}>
+            <Text
+              style={{
+                fontFamily: 'IRANSansMobile_Bold',
+                fontSize: 18,
+                color: 'white',
+              }}>
               صفحه ورود
             </Text>
           }
         />
         <View style={{flex: 1, alignItems: 'center', margin: 20}}>
-          <Image resizeMode={'stretch'} source={require('../../../../assets/img/user.png')} style={{width:100,height:100,marginTop:-40,marginBottom:20}} />
+          <Image
+            resizeMode={'stretch'}
+            source={require('../../../../assets/img/user.png')}
+            style={{width: 100, height: 100, marginTop: -40, marginBottom: 20}}
+          />
           <Text style={{fontFamily: 'IRANSansMobile_Light', fontSize: 18}}>
             شماره موبایل خود را وارد کنید
           </Text>
-          <Item style={{margin:20}}>
+          <Item style={{margin: 20}}>
             <Icon name={'call'} />
             <Input
               style={{fontFamily: 'IRANSansMobile'}}

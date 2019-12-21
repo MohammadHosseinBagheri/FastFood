@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {View, Text, view, ImageBackground, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  view,
+  ImageBackground,
+  FlatList,
+  Image,
+  AsyncStorage,
+} from 'react-native';
 import {Icon, Button} from 'native-base';
 import StarRating from 'react-native-star-rating';
 class Menus extends Component {
@@ -8,6 +16,26 @@ class Menus extends Component {
     this.state = {
       count: 0,
     };
+  }
+  async onLogin() {
+    const data = {
+      dataItem: this.props,
+      count: this.state.count,
+    };
+    if (this.state.count == 0) {
+      alert('سبد خرید خالی است');
+      return;
+    } else {
+      await AsyncStorage.getItem('user', (error, Mydata) => {
+        const dataJson = JSON.parse(Mydata);
+        console.log(dataJson);
+        if (dataJson) {
+          this.props.navigation.navigate('SellingMapScreen', data);
+        } else {
+          alert('ابتدا وارد حساب کابری شوید');
+        }
+      });
+    }
   }
   render() {
     const {item} = this.props;
@@ -28,18 +56,7 @@ class Menus extends Component {
             justifyContent: 'center',
             backgroundColor: '#FF7043',
           }}
-          onPress={() => {
-            const data = {
-              dataItem: this.props,
-              count: this.state.count,
-            };
-            if (this.state.count == 0) {
-              alert('سبد خرید خالی است');
-              return;
-            } else {
-              this.props.navigation.navigate('SellingMapScreen', data);
-            }
-          }}>
+          onPress={this.onLogin.bind(this)}>
           <Text
             style={{
               fontFamily: 'IRANSansMobile_Bold',
@@ -128,6 +145,7 @@ class Restaurants extends Component {
       menus: [],
       data: '',
       foods: [],
+      user: false,
     };
   }
   onStarRatingPress(rating) {
@@ -137,6 +155,7 @@ class Restaurants extends Component {
   }
   async componentDidMount() {
     //console.log(this.props);
+
     const data = await this.props.navigation.state.params.item;
     await this.setState({
       data: data,

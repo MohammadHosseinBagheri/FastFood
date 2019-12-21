@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
-  Alert
+  Alert,
+  AsyncStorage,
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import MyHeader from '../../../components/Header/MyHeader';
@@ -80,11 +81,10 @@ class Basicitem extends Component {
                       padding: 10,
                       borderColor: '#E91E63',
                       borderWidth: 1,
-                      backgroundColor:'white',
-                      borderRadius:10,
-                      elevation:10
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      elevation: 10,
                     }}
-                    
                     onPress={() =>
                       this.props.navigation.navigate('RestaurantsScreen', {
                         item: item,
@@ -154,11 +154,13 @@ class Categories extends Component {
     const status = await responseJson.status;
     //await console.log(status);
     if (status == 200) {
-      this.props.navigation.navigate('CategoriesFoodScreen',data={responseJson,item});
-      return
-    }
-    else{
-      Alert.alert('دسته مورد نظر یافت نشد')
+      this.props.navigation.navigate(
+        'CategoriesFoodScreen',
+        (data = {responseJson, item}),
+      );
+      return;
+    } else {
+      Alert.alert('دسته مورد نظر یافت نشد');
     }
   }
   render() {
@@ -170,10 +172,29 @@ class Categories extends Component {
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <ImageBackground
             resizeMode={'stretch'}
-            imageStyle={{borderRadius:20}}
-            style={{width: 100, height: 100, borderRadius: 20, margin: 10,alignItems:'center',elevation:20}}
+            imageStyle={{borderRadius: 20}}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 20,
+              margin: 10,
+              alignItems: 'center',
+              elevation: 20,
+            }}
             source={item.img}>
-            <Text style={{fontFamily: 'IRANSansMobile',color:'white',backgroundColor:'black',margin:5,padding:5,marginTop:-20,borderRadius:20,opacity:0.8}}>{item.name}</Text>
+            <Text
+              style={{
+                fontFamily: 'IRANSansMobile',
+                color: 'white',
+                backgroundColor: 'black',
+                margin: 5,
+                padding: 5,
+                marginTop: -20,
+                borderRadius: 20,
+                opacity: 0.8,
+              }}>
+              {item.name}
+            </Text>
           </ImageBackground>
         </View>
       </TouchableOpacity>
@@ -190,6 +211,14 @@ class Home extends Component {
     };
   }
   async componentDidMount() {
+    await AsyncStorage.getItem('user', (error, data) => {
+      if (error) {
+        console.log(error);
+        return;
+      } else {
+        console.log(JSON.parse(data));
+      }
+    });
     await this.getDataFromRestaurantApi();
     await this.getDataFromPlacesApi();
     await this.getDataFromCategoriesApi();
